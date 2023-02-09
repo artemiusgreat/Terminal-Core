@@ -7,8 +7,8 @@
     <Version>1.0.0-prerelease</Version>
     <Description>Internal package for trading and analysis</Description>
     <Authors>artemiusgreat</Authors>
-    <Copyright>http://indemos.com</Copyright>
-    <PackageProjectUrl>https://github.com/Indemos/Terminal</PackageProjectUrl>
+    <Copyright>indemos.com</Copyright>
+    <PackageProjectUrl>http://indemos.com</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Indemos/Terminal</RepositoryUrl>
     <PackageTags>finance trading market stock backtester algorithmic-trading</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
