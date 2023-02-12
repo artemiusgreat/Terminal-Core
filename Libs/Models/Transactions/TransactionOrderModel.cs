@@ -33,7 +33,7 @@ namespace Terminal.Core.ModelSpace
     /// <summary>
     /// Order events
     /// </summary>
-    Action<ITransactionMessage<ITransactionOrderModel>> OrderStream { get; set; }
+    Action<TransactionMessage<ITransactionOrderModel>> OrderStream { get; set; }
   }
 
   /// <summary>
@@ -64,7 +64,7 @@ namespace Terminal.Core.ModelSpace
     /// <summary>
     /// Order events
     /// </summary>
-    public virtual Action<ITransactionMessage<ITransactionOrderModel>> OrderStream { get; set; }
+    public virtual Action<TransactionMessage<ITransactionOrderModel>> OrderStream { get; set; }
 
     /// <summary>
     /// Constructor

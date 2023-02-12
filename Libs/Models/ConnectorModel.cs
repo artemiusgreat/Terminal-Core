@@ -29,12 +29,12 @@ namespace Terminal.Core.ModelSpace
     /// <summary>
     /// Incoming data event
     /// </summary>
-    Action<ITransactionMessage<IPointModel>> DataStream { get; set; }
+    Action<TransactionMessage<IPointModel>> DataStream { get; set; }
 
     /// <summary>
     /// Send order event
     /// </summary>
-    Action<ITransactionMessage<ITransactionOrderModel>> OrderStream { get; set; }
+    Action<TransactionMessage<ITransactionOrderModel>> OrderStream { get; set; }
 
     /// <summary>
     /// Restore state and initialize
@@ -57,10 +57,40 @@ namespace Terminal.Core.ModelSpace
     Task Unsubscribe();
 
     /// <summary>
-    /// Send orders
+    /// Get quote
+    /// </summary>
+    /// <param name="message"></param>
+    Task<IPointModel> GetPoint(PointMessage message);
+
+    /// <summary>
+    /// Get quotes history
+    /// </summary>
+    /// <param name="message"></param>
+    Task<IList<IPointModel>> GetPoints(PointMessage message);
+
+    /// <summary>
+    /// Get option chains
+    /// </summary>
+    /// <param name="message"></param>
+    Task<IList<IPointModel>> GetOptions(OptionMessage message);
+
+    /// <summary>
+    /// Send new orders
     /// </summary>
     /// <param name="orders"></param>
-    Task SendOrders(params ITransactionOrderModel[] orders);
+    Task<IList<ITransactionOrderModel>> CreateOrders(params ITransactionOrderModel[] orders);
+
+    /// <summary>
+    /// Update orders
+    /// </summary>
+    /// <param name="orders"></param>
+    Task<IList<ITransactionOrderModel>> UpdateOrders(params ITransactionOrderModel[] orders);
+
+    /// <summary>
+    /// Cancel orders
+    /// </summary>
+    /// <param name="orders"></param>
+    Task<IList<ITransactionOrderModel>> DeleteOrders(params ITransactionOrderModel[] orders);
   }
 
   /// <summary>
@@ -81,12 +111,12 @@ namespace Terminal.Core.ModelSpace
     /// <summary>
     /// Incoming data event
     /// </summary>
-    public virtual Action<ITransactionMessage<IPointModel>> DataStream { get; set; }
+    public virtual Action<TransactionMessage<IPointModel>> DataStream { get; set; }
 
     /// <summary>
     /// Send order event
     /// </summary>
-    public virtual Action<ITransactionMessage<ITransactionOrderModel>> OrderStream { get; set; }
+    public virtual Action<TransactionMessage<ITransactionOrderModel>> OrderStream { get; set; }
 
     /// <summary>
     /// Constructor
@@ -119,15 +149,63 @@ namespace Terminal.Core.ModelSpace
     public abstract Task Unsubscribe();
 
     /// <summary>
-    /// Send orders
-    /// </summary>
-    /// <param name="orders"></param>
-    public abstract Task SendOrders(params ITransactionOrderModel[] orders);
-
-    /// <summary>
     /// Dispose
     /// </summary>
     public virtual void Dispose() => Disconnect();
+
+    /// <summary>
+    /// Get quote
+    /// </summary>
+    /// <param name="message"></param>
+    public virtual Task<IPointModel> GetPoint(PointMessage message)
+    {
+      return Task.FromResult(null as IPointModel);
+    }
+
+    /// <summary>
+    /// Get quotes history
+    /// </summary>
+    /// <param name="message"></param>
+    public virtual Task<IList<IPointModel>> GetPoints(PointMessage message)
+    {
+      return Task.FromResult(null as IList<IPointModel>);
+    }
+
+    /// <summary>
+    /// Get option chains
+    /// </summary>
+    /// <param name="message"></param>
+    public virtual Task<IList<IPointModel>> GetOptions(OptionMessage message)
+    {
+      return Task.FromResult(null as IList<IPointModel>);
+    }
+
+    /// <summary>
+    /// Send new orders
+    /// </summary>
+    /// <param name="orders"></param>
+    public virtual Task<IList<ITransactionOrderModel>> CreateOrders(params ITransactionOrderModel[] orders)
+    {
+      return Task.FromResult(null as IList<ITransactionOrderModel>);
+    }
+
+    /// <summary>
+    /// Update orders
+    /// </summary>
+    /// <param name="orders"></param>
+    public virtual Task<IList<ITransactionOrderModel>> UpdateOrders(params ITransactionOrderModel[] orders)
+    {
+      return Task.FromResult(null as IList<ITransactionOrderModel>);
+    }
+
+    /// <summary>
+    /// Cancel orders
+    /// </summary>
+    /// <param name="orders"></param>
+    public virtual Task<IList<ITransactionOrderModel>> DeleteOrders(params ITransactionOrderModel[] orders)
+    {
+      return Task.FromResult(null as IList<ITransactionOrderModel>);
+    }
 
     /// <summary>
     /// Ensure all properties have correct values

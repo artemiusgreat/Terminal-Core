@@ -30,12 +30,12 @@ namespace Terminal.Core.CollectionSpace
     /// <summary>
     /// Observable item
     /// </summary>
-    Action<ITransactionMessage<T>> ItemStream { get; set; }
+    Action<TransactionMessage<T>> ItemStream { get; set; }
 
     /// <summary>
     /// Observable collection
     /// </summary>
-    Action<ITransactionMessage<IList<T>>> ItemsStream { get; set; }
+    Action<TransactionMessage<IList<T>>> ItemsStream { get; set; }
   }
 
   /// <summary>
@@ -62,12 +62,12 @@ namespace Terminal.Core.CollectionSpace
     /// <summary>
     /// Observable item
     /// </summary>
-    public virtual Action<ITransactionMessage<T>> ItemStream { get; set; }
+    public virtual Action<TransactionMessage<T>> ItemStream { get; set; }
 
     /// <summary>
     /// Observable collection
     /// </summary>
-    public virtual Action<ITransactionMessage<IList<T>>> ItemsStream { get; set; }
+    public virtual Action<TransactionMessage<IList<T>>> ItemsStream { get; set; }
 
     /// <summary>
     /// Constructor

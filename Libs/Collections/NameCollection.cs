@@ -19,12 +19,12 @@ namespace Terminal.Core.CollectionSpace
     /// <summary>
     /// Observable item changes
     /// </summary>
-    Action<ITransactionMessage<TValue>> ItemStream { get; set; }
+    Action<TransactionMessage<TValue>> ItemStream { get; set; }
 
     /// <summary>
     /// Observable items changes
     /// </summary>
-    Action<ITransactionMessage<IDictionary<TKey, TValue>>> ItemsStream { get; set; }
+    Action<TransactionMessage<IDictionary<TKey, TValue>>> ItemsStream { get; set; }
   }
 
   /// <summary>
@@ -42,12 +42,12 @@ namespace Terminal.Core.CollectionSpace
     /// <summary>
     /// Observable item changes
     /// </summary>
-    public virtual Action<ITransactionMessage<TValue>> ItemStream { get; set; }
+    public virtual Action<TransactionMessage<TValue>> ItemStream { get; set; }
 
     /// <summary>
     /// Observable items changes
     /// </summary>
-    public virtual Action<ITransactionMessage<IDictionary<TKey, TValue>>> ItemsStream { get; set; }
+    public virtual Action<TransactionMessage<IDictionary<TKey, TValue>>> ItemsStream { get; set; }
 
     /// <summary>
     /// Constructor
