@@ -55,6 +55,12 @@ namespace Terminal.Core.ModelSpace
     /// Suspend execution
     /// </summary>
     Task Unsubscribe();
+
+    /// <summary>
+    /// Send orders
+    /// </summary>
+    /// <param name="orders"></param>
+    Task SendOrders(params ITransactionOrderModel[] orders);
   }
 
   /// <summary>
@@ -111,6 +117,12 @@ namespace Terminal.Core.ModelSpace
     /// Unsubscribe from data streams
     /// </summary>
     public abstract Task Unsubscribe();
+
+    /// <summary>
+    /// Send orders
+    /// </summary>
+    /// <param name="orders"></param>
+    public abstract Task SendOrders(params ITransactionOrderModel[] orders);
 
     /// <summary>
     /// Dispose
