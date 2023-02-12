@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reactive.Subjects;
 using Terminal.Core.EnumSpace;
 using Terminal.Core.MessageSpace;
 using Terminal.Core.ModelSpace;
@@ -31,12 +30,12 @@ namespace Terminal.Core.CollectionSpace
     /// <summary>
     /// Observable item
     /// </summary>
-    ISubject<ITransactionMessage<T>> ItemStream { get; }
+    Action<ITransactionMessage<T>> ItemStream { get; set; }
 
     /// <summary>
     /// Observable collection
     /// </summary>
-    ISubject<ITransactionMessage<IList<T>>> ItemsStream { get; }
+    Action<ITransactionMessage<IList<T>>> ItemsStream { get; set; }
   }
 
   /// <summary>
@@ -63,12 +62,12 @@ namespace Terminal.Core.CollectionSpace
     /// <summary>
     /// Observable item
     /// </summary>
-    public virtual ISubject<ITransactionMessage<T>> ItemStream { get; protected set; }
+    public virtual Action<ITransactionMessage<T>> ItemStream { get; set; }
 
     /// <summary>
     /// Observable collection
     /// </summary>
-    public virtual ISubject<ITransactionMessage<IList<T>>> ItemsStream { get; protected set; }
+    public virtual Action<ITransactionMessage<IList<T>>> ItemsStream { get; set; }
 
     /// <summary>
     /// Constructor
@@ -76,8 +75,8 @@ namespace Terminal.Core.CollectionSpace
     public IndexCollection()
     {
       Items = new List<T>();
-      ItemStream = new Subject<ITransactionMessage<T>>();
-      ItemsStream = new Subject<ITransactionMessage<IList<T>>>();
+      ItemStream = o => { };
+      ItemsStream = o => { };
     }
 
     /// <summary>
@@ -246,7 +245,7 @@ namespace Terminal.Core.CollectionSpace
         Action = action
       };
 
-      ItemStream.OnNext(itemMessage);
+      ItemStream(itemMessage);
     }
 
     /// <summary>
@@ -261,7 +260,7 @@ namespace Terminal.Core.CollectionSpace
         Action = action
       };
 
-      ItemsStream.OnNext(collectionMessage);
+      ItemsStream(collectionMessage);
     }
 
     /// <summary>

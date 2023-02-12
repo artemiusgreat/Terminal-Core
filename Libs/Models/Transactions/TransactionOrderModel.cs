@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Reactive.Subjects;
 using Terminal.Core.EnumSpace;
 using Terminal.Core.MessageSpace;
 
@@ -33,7 +33,7 @@ namespace Terminal.Core.ModelSpace
     /// <summary>
     /// Order events
     /// </summary>
-    ISubject<ITransactionMessage<ITransactionOrderModel>> OrderStream { get; set; }
+    Action<ITransactionMessage<ITransactionOrderModel>> OrderStream { get; set; }
   }
 
   /// <summary>
@@ -64,7 +64,7 @@ namespace Terminal.Core.ModelSpace
     /// <summary>
     /// Order events
     /// </summary>
-    public virtual ISubject<ITransactionMessage<ITransactionOrderModel>> OrderStream { get; set; }
+    public virtual Action<ITransactionMessage<ITransactionOrderModel>> OrderStream { get; set; }
 
     /// <summary>
     /// Constructor
@@ -72,7 +72,7 @@ namespace Terminal.Core.ModelSpace
     public TransactionOrderModel()
     {
       Orders = new List<ITransactionOrderModel>();
-      OrderStream = new Subject<ITransactionMessage<ITransactionOrderModel>>();
+      OrderStream = o => { };
     }
   }
 }

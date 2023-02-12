@@ -14,18 +14,18 @@ namespace Terminal.Tests.Collections
       var item = new BaseModel { Id = "1" };
       var collection = new IndexCollection<IBaseModel> { item };
 
-      collection.ItemStream.Take(1).Subscribe(o =>
+      collection.ItemStream = o =>
       {
         Assert.Null(o.Next);
         Assert.Null(o.Previous);
         Assert.Equal(ActionEnum.Delete, o.Action);
-      });
+      };
 
-      collection.ItemsStream.Take(1).Subscribe(o =>
+      collection.ItemsStream = o =>
       {
         Assert.Equal(collection.Items, o.Next);
         Assert.Equal(ActionEnum.Delete, o.Action);
-      });
+      };
 
       collection.Clear();
 
@@ -41,33 +41,33 @@ namespace Terminal.Tests.Collections
 
       Assert.Empty(collection);
 
-      collection.ItemStream.Take(1).Subscribe(o =>
+      collection.ItemStream = o =>
       {
         Assert.Null(o.Previous);
         Assert.Equal(item, o.Next);
         Assert.Equal(ActionEnum.Create, o.Action);
-      });
+      };
 
-      collection.ItemsStream.Take(1).Subscribe(o =>
+      collection.ItemsStream = o =>
       {
         Assert.Equal(collection.Items, o.Next);
         Assert.Equal(ActionEnum.Create, o.Action);
-      });
+      };
 
       collection.Add(item);
 
-      collection.ItemStream.Take(1).Subscribe(o =>
+      collection.ItemStream = o =>
       {
         Assert.Equal(itemNext, o.Next);
         Assert.Equal(item, o.Previous);
         Assert.Equal(ActionEnum.Create, o.Action);
-      });
+      };
 
-      collection.ItemsStream.Take(1).Subscribe(o =>
+      collection.ItemsStream = o =>
       {
         Assert.Equal(collection.Items, o.Next);
         Assert.Equal(ActionEnum.Create, o.Action);
-      });
+      };
 
       collection.Add(new[] { itemNext });
 
@@ -83,18 +83,18 @@ namespace Terminal.Tests.Collections
       var itemNext = new BaseModel { Id = "2" };
       var collection = new IndexCollection<IBaseModel> { item };
 
-      collection.ItemStream.Take(1).Subscribe(o =>
+      collection.ItemStream = o =>
       {
         Assert.Equal(itemNext, o.Next);
         Assert.Equal(item, o.Previous);
         Assert.Equal(ActionEnum.Create, o.Action);
-      });
+      };
 
-      collection.ItemsStream.Take(1).Subscribe(o =>
+      collection.ItemsStream = o =>
       {
         Assert.Equal(collection.Items, o.Next);
         Assert.Equal(ActionEnum.Create, o.Action);
-      });
+      };
 
       collection.Insert(0, itemNext);
 
@@ -146,18 +146,18 @@ namespace Terminal.Tests.Collections
       var itemNext = new BaseModel { Id = "2" };
       var collection = new IndexCollection<IBaseModel> { item, itemNext };
 
-      collection.ItemStream.Take(1).Subscribe(o =>
+      collection.ItemStream = o =>
       {
         Assert.Null(o.Next);
         Assert.Equal(itemNext, o.Previous);
         Assert.Equal(ActionEnum.Delete, o.Action);
-      });
+      };
 
-      collection.ItemsStream.Take(1).Subscribe(o =>
+      collection.ItemsStream = o =>
       {
         Assert.Equal(collection.Items, o.Next);
         Assert.Equal(ActionEnum.Delete, o.Action);
-      });
+      };
 
       collection.Remove(itemNext);
 
@@ -173,18 +173,18 @@ namespace Terminal.Tests.Collections
       var itemNext = new BaseModel { Id = "2" };
       var collection = new IndexCollection<IBaseModel> { item, itemNext };
 
-      collection.ItemStream.Take(1).Subscribe(o =>
+      collection.ItemStream = o =>
       {
         Assert.Null(o.Next);
         Assert.Equal(itemNext, o.Previous);
         Assert.Equal(ActionEnum.Delete, o.Action);
-      });
+      };
 
-      collection.ItemsStream.Take(1).Subscribe(o =>
+      collection.ItemsStream = o =>
       {
         Assert.Equal(collection.Items, o.Next);
         Assert.Equal(ActionEnum.Delete, o.Action);
-      });
+      };
 
       collection.RemoveAt(1);
 
@@ -200,18 +200,18 @@ namespace Terminal.Tests.Collections
       var itemNext = new BaseModel { Id = "2" };
       var collection = new IndexCollection<IBaseModel> { item };
 
-      collection.ItemStream.Take(1).Subscribe(o =>
+      collection.ItemStream = o =>
       {
         Assert.Equal(itemNext, o.Next);
         Assert.Equal(item, o.Previous);
         Assert.Equal(ActionEnum.Update, o.Action);
-      });
+      };
 
-      collection.ItemsStream.Take(1).Subscribe(o =>
+      collection.ItemsStream = o =>
       {
         Assert.Equal(collection.Items, o.Next);
         Assert.Equal(ActionEnum.Update, o.Action);
-      });
+      };
 
       collection.Update(0, itemNext);
 

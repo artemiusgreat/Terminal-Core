@@ -15,18 +15,18 @@ namespace Terminal.Tests.Collections
       var item = new TimeModel { Id = "1", Time = span };
       var collection = new TimeCollection<ITimeModel>();
 
-      collection.ItemStream.Take(1).Subscribe(o =>
+      collection.ItemStream = o =>
       {
         Assert.Null(o.Previous);
         Assert.Equal(item, o.Next);
         Assert.Equal(ActionEnum.Create, o.Action);
-      });
+      };
 
-      collection.ItemsStream.Take(1).Subscribe(o =>
+      collection.ItemsStream = o =>
       {
         Assert.Equal(collection.Items, o.Next);
         Assert.Equal(ActionEnum.Create, o.Action);
-      });
+      };
 
       collection.Add(item);
 
@@ -43,18 +43,18 @@ namespace Terminal.Tests.Collections
       var itemNext = new TimeModel { Id = "2", Time = stamp, TimeFrame = span };
       var collection = new TimeCollection<ITimeModel> { item };
 
-      collection.ItemStream.Take(1).Subscribe(o =>
+      collection.ItemStream = o =>
       {
         Assert.Equal(itemNext, o.Next);
         Assert.Equal(item, o.Previous);
         Assert.Equal(ActionEnum.Update, o.Action);
-      });
+      };
 
-      collection.ItemsStream.Take(1).Subscribe(o =>
+      collection.ItemsStream = o =>
       {
         Assert.Equal(collection.Items, o.Next);
         Assert.Equal(ActionEnum.Update, o.Action);
-      });
+      };
 
       collection.Add(itemNext);
 
@@ -71,18 +71,18 @@ namespace Terminal.Tests.Collections
       var itemNext = new TimeModel { Id = "2", Time = stamp.AddSeconds(20), TimeFrame = span };
       var collection = new TimeCollection<ITimeModel> { item };
 
-      collection.ItemStream.Take(1).Subscribe(o =>
+      collection.ItemStream = o =>
       {
         Assert.Equal(itemNext, o.Next);
         Assert.Equal(item, o.Previous);
         Assert.Equal(ActionEnum.Create, o.Action);
-      });
+      };
 
-      collection.ItemsStream.Take(1).Subscribe(o =>
+      collection.ItemsStream = o =>
       {
         Assert.Equal(collection.Items, o.Next);
         Assert.Equal(ActionEnum.Create, o.Action);
-      });
+      };
 
       collection.Add(itemNext);
 

@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using Terminal.Core.EnumSpace;
 using Terminal.Core.MessageSpace;
@@ -28,14 +27,14 @@ namespace Terminal.Core.ModelSpace
     IAccountModel Account { get; set; }
 
     /// <summary>
-    /// Send order event
-    /// </summary>
-    ISubject<ITransactionMessage<ITransactionOrderModel>> OrderStream { get; }
-
-    /// <summary>
     /// Incoming data event
     /// </summary>
-    ISubject<ITransactionMessage<IPointModel>> DataStream { get; }
+    Action<ITransactionMessage<IPointModel>> DataStream { get; set; }
+
+    /// <summary>
+    /// Send order event
+    /// </summary>
+    Action<ITransactionMessage<ITransactionOrderModel>> OrderStream { get; set; }
 
     /// <summary>
     /// Restore state and initialize
@@ -76,12 +75,12 @@ namespace Terminal.Core.ModelSpace
     /// <summary>
     /// Incoming data event
     /// </summary>
-    public virtual ISubject<ITransactionMessage<IPointModel>> DataStream { get; }
+    public virtual Action<ITransactionMessage<IPointModel>> DataStream { get; set; }
 
     /// <summary>
     /// Send order event
     /// </summary>
-    public virtual ISubject<ITransactionMessage<ITransactionOrderModel>> OrderStream { get; }
+    public virtual Action<ITransactionMessage<ITransactionOrderModel>> OrderStream { get; set; }
 
     /// <summary>
     /// Constructor
@@ -89,8 +88,8 @@ namespace Terminal.Core.ModelSpace
     public ConnectorModel()
     {
       Mode = EnvironmentEnum.Paper;
-      DataStream = new Subject<ITransactionMessage<IPointModel>>();
-      OrderStream = new Subject<ITransactionMessage<ITransactionOrderModel>>();
+      DataStream = o => { };
+      OrderStream = o => { };
     }
 
     /// <summary>

@@ -2,12 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using Terminal.Core.EnumSpace;
 using Terminal.Core.MessageSpace;
 using Terminal.Core.ModelSpace;
+using static System.Collections.Specialized.BitVector32;
 
 namespace Terminal.Core.CollectionSpace
 {
@@ -21,12 +19,12 @@ namespace Terminal.Core.CollectionSpace
     /// <summary>
     /// Observable item changes
     /// </summary>
-    ISubject<ITransactionMessage<TValue>> ItemStream { get; }
+    Action<ITransactionMessage<TValue>> ItemStream { get; set; }
 
     /// <summary>
     /// Observable items changes
     /// </summary>
-    ISubject<ITransactionMessage<IDictionary<TKey, TValue>>> ItemsStream { get; }
+    Action<ITransactionMessage<IDictionary<TKey, TValue>>> ItemsStream { get; set; }
   }
 
   /// <summary>
@@ -44,12 +42,12 @@ namespace Terminal.Core.CollectionSpace
     /// <summary>
     /// Observable item changes
     /// </summary>
-    public virtual ISubject<ITransactionMessage<TValue>> ItemStream { get; protected set; }
+    public virtual Action<ITransactionMessage<TValue>> ItemStream { get; set; }
 
     /// <summary>
     /// Observable items changes
     /// </summary>
-    public virtual ISubject<ITransactionMessage<IDictionary<TKey, TValue>>> ItemsStream { get; protected set; }
+    public virtual Action<ITransactionMessage<IDictionary<TKey, TValue>>> ItemsStream { get; set; }
 
     /// <summary>
     /// Constructor
@@ -57,8 +55,8 @@ namespace Terminal.Core.CollectionSpace
     public NameCollection()
     {
       Items = new ConcurrentDictionary<TKey, TValue>();
-      ItemStream = new Subject<ITransactionMessage<TValue>>();
-      ItemsStream = new Subject<ITransactionMessage<IDictionary<TKey, TValue>>>();
+      ItemStream = o => { };
+      ItemsStream = o => { };
     }
 
     /// <summary>
@@ -83,7 +81,7 @@ namespace Terminal.Core.CollectionSpace
     public virtual TValue this[TKey index]
     {
       get => TryGetValue(index, out TValue item) ? item : default;
-      set => Add(index, value, ActionEnum.Update);
+      set => Add(index, value);
     }
 
     /// <summary>
@@ -92,17 +90,7 @@ namespace Terminal.Core.CollectionSpace
     /// <param name="item"></param>
     public virtual void Add(KeyValuePair<TKey, TValue> item)
     {
-      Add(item.Key, item.Value, ActionEnum.Create);
-    }
-
-    /// <summary>
-    /// Add item using specific index
-    /// </summary>
-    /// <param name="index"></param>
-    /// <param name="dataItem"></param>
-    public virtual void Add(TKey index, TValue dataItem)
-    {
-      Add(index, dataItem, ActionEnum.Create);
+      Add(item.Key, item.Value);
     }
 
     /// <summary>
@@ -110,9 +98,10 @@ namespace Terminal.Core.CollectionSpace
     /// </summary>
     /// <param name="index"></param>
     /// <param name="item"></param>
-    public virtual void Add(TKey index, TValue item, ActionEnum action)
+    public virtual void Add(TKey index, TValue item)
     {
       var previous = this[index];
+      var action = previous is null ? ActionEnum.Create : ActionEnum.Update;
 
       Items[index] = item;
 
@@ -173,7 +162,7 @@ namespace Terminal.Core.CollectionSpace
         Action = action
       };
 
-      ItemStream.OnNext(itemMessage);
+      ItemStream(itemMessage);
     }
 
     /// <summary>
@@ -188,7 +177,7 @@ namespace Terminal.Core.CollectionSpace
         Action = action
       };
 
-      ItemsStream.OnNext(collectionMessage);
+      ItemsStream(collectionMessage);
     }
   }
 }
