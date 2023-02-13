@@ -1,3 +1,4 @@
+using Distribution.DomainSpace;
 using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,11 @@ namespace Terminal.Core.ModelSpace
     /// Production or Development mode
     /// </summary>
     EnvironmentEnum Mode { get; set; }
+
+    /// <summary>
+    /// Actor system
+    /// </summary>
+    IScene Scene { get; set; }
 
     /// <summary>
     /// Account
@@ -104,6 +110,11 @@ namespace Terminal.Core.ModelSpace
     public virtual EnvironmentEnum Mode { get; set; }
 
     /// <summary>
+    /// Actor system
+    /// </summary>
+    public virtual IScene Scene { get; set; }
+
+    /// <summary>
     /// Account
     /// </summary>
     public virtual IAccountModel Account { get; set; }
@@ -124,6 +135,10 @@ namespace Terminal.Core.ModelSpace
     public ConnectorModel()
     {
       Mode = EnvironmentEnum.Paper;
+
+      Account = new AccountModel();
+      Scene = InstanceService<Scene>.Instance;
+
       DataStream = o => { };
       OrderStream = o => { };
     }
