@@ -1,5 +1,5 @@
+using System.Collections.ObjectModel;
 using System.Linq;
-using Terminal.Core.CollectionSpace;
 using Terminal.Core.ExtensionSpace;
 using Terminal.Core.ModelSpace;
 
@@ -17,7 +17,7 @@ namespace Terminal.Core.IndicatorSpace
     /// <param name="collection"></param>
     /// <param name="side"></param>
     /// <returns></returns>
-    public ImbalanceIndicator Calculate(IIndexCollection<IPointModel> collection, int side = 0)
+    public ImbalanceIndicator Calculate(ObservableCollection<IPointModel> collection, int side = 0)
     {
       var currentPoint = collection.LastOrDefault();
 

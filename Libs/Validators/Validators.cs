@@ -17,7 +17,6 @@ namespace Terminal.Core.ValidatorSpace
     {
       Instances = new Dictionary<string, dynamic>
       {
-        [nameof(TimeValidator)] = InstanceService<TimeValidator>.Instance,
         [nameof(PointValidator)] = InstanceService<PointValidator>.Instance,
         [nameof(PointCollectionValidator)] = InstanceService<PointCollectionValidator>.Instance,
         [nameof(PointBarValidator)] = InstanceService<PointBarValidator>.Instance,

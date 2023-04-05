@@ -6,7 +6,7 @@ namespace Terminal.Core.ValidatorSpace
   /// <summary>
   /// Validation rules
   /// </summary>
-  public class InstrumentOptionValidator : AbstractValidator<IInstrumentOptionModel>
+  public class InstrumentOptionValidator : AbstractValidator<OptionModel>
   {
     public InstrumentOptionValidator()
     {

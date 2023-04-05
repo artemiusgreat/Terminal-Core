@@ -91,7 +91,7 @@ namespace Terminal.Core.ModelSpace
   /// <summary>
   /// Generic position model
   /// </summary>
-  public class TransactionPositionModel : TransactionOrderModel, ITransactionPositionModel
+  public class PositionModel : OrderModel, ITransactionPositionModel
   {
     /// <summary>
     /// Actual PnL measured in account's currency
@@ -235,7 +235,7 @@ namespace Terminal.Core.ModelSpace
     /// <summary>
     /// Constructor
     /// </summary>
-    public TransactionPositionModel()
+    public PositionModel()
     {
       OpenPrices = new List<ITransactionOrderModel>();
     }

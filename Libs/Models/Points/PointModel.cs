@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Terminal.Core.ModelSpace
@@ -5,7 +6,7 @@ namespace Terminal.Core.ModelSpace
   /// <summary>
   /// Definition
   /// </summary>
-  public interface IPointModel : ITimeModel
+  public interface IPointModel : IBaseModel
   {
     /// <summary>
     /// Bid
@@ -28,9 +29,24 @@ namespace Terminal.Core.ModelSpace
     double? AskSize { get; set; }
 
     /// <summary>
+    /// Last price or value
+    /// </summary>
+    double? Last { get; set; }
+
+    /// <summary>
+    /// Time stamp
+    /// </summary>
+    DateTime? Time { get; set; }
+
+    /// <summary>
+    /// Aggregation period for the quotes
+    /// </summary>
+    TimeSpan? TimeFrame { get; set; }
+
+    /// <summary>
     /// Reference to the complex data point
     /// </summary>
-    IPointBarModel Bar { get; set; }
+    BarModel Bar { get; set; }
 
     /// <summary>
     /// Reference to the account
@@ -51,7 +67,7 @@ namespace Terminal.Core.ModelSpace
   /// <summary>
   /// Implementation
   /// </summary>
-  public class PointModel : TimeModel, IPointModel
+  public class PointModel : BaseModel, IPointModel
   {
     /// <summary>
     /// Bid
@@ -74,6 +90,21 @@ namespace Terminal.Core.ModelSpace
     public virtual double? AskSize { get; set; }
 
     /// <summary>
+    /// Last price or value
+    /// </summary>
+    public virtual double? Last { get; set; }
+
+    /// <summary>
+    /// Time stamp
+    /// </summary>
+    public virtual DateTime? Time { get; set; }
+
+    /// <summary>
+    /// Aggregation period for the quotes
+    /// </summary>
+    public virtual TimeSpan? TimeFrame { get; set; }
+
+    /// <summary>
     /// Reference to the account
     /// </summary>
     public virtual IAccountModel Account { get; set; }
@@ -81,7 +112,7 @@ namespace Terminal.Core.ModelSpace
     /// <summary>
     /// Reference to the complex data point
     /// </summary>
-    public virtual IPointBarModel Bar { get; set; }
+    public virtual BarModel Bar { get; set; }
 
     /// <summary>
     /// Reference to the instrument
@@ -98,7 +129,9 @@ namespace Terminal.Core.ModelSpace
     /// </summary>
     public PointModel()
     {
-      Bar = new PointBarModel();
+      Time = DateTime.Now;
+
+      Bar = new BarModel();
       Account = new AccountModel();
       Instrument = new InstrumentModel();
       Series = new Dictionary<string, IPointModel>();
@@ -112,7 +145,7 @@ namespace Terminal.Core.ModelSpace
     {
       var clone = base.Clone() as IPointModel;
 
-      clone.Bar = Bar.Clone() as IPointBarModel;
+      clone.Bar = Bar.Clone() as BarModel;
 
       return clone;
     }

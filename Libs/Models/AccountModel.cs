@@ -1,4 +1,5 @@
-using Terminal.Core.CollectionSpace;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Terminal.Core.EnumSpace;
 
 namespace Terminal.Core.ModelSpace
@@ -31,27 +32,27 @@ namespace Terminal.Core.ModelSpace
     /// <summary>
     /// History of orders
     /// </summary>
-    IIndexCollection<ITransactionOrderModel> Orders { get; set; }
+    ObservableCollection<ITransactionOrderModel> Orders { get; set; }
 
     /// <summary>
     /// Completed trades
     /// </summary>
-    IIndexCollection<ITransactionPositionModel> Positions { get; set; }
+    ObservableCollection<ITransactionPositionModel> Positions { get; set; }
 
     /// <summary>
     /// Active orders
     /// </summary>
-    INameCollection<string, ITransactionOrderModel> ActiveOrders { get; set; }
+    IDictionary<string, ITransactionOrderModel> ActiveOrders { get; set; }
 
     /// <summary>
     /// Active positions
     /// </summary>
-    INameCollection<string, ITransactionPositionModel> ActivePositions { get; set; }
+    IDictionary<string, ITransactionPositionModel> ActivePositions { get; set; }
 
     /// <summary>
     /// List of instruments
     /// </summary>
-    INameCollection<string, IInstrumentModel> Instruments { get; set; }
+    IDictionary<string, IInstrumentModel> Instruments { get; set; }
   }
 
   /// <summary>
@@ -82,27 +83,27 @@ namespace Terminal.Core.ModelSpace
     /// <summary>
     /// History of completed orders
     /// </summary>
-    public virtual IIndexCollection<ITransactionOrderModel> Orders { get; set; }
+    public virtual ObservableCollection<ITransactionOrderModel> Orders { get; set; }
 
     /// <summary>
     /// History of completed deals, closed positions
     /// </summary>
-    public virtual IIndexCollection<ITransactionPositionModel> Positions { get; set; }
+    public virtual ObservableCollection<ITransactionPositionModel> Positions { get; set; }
 
     /// <summary>
     /// Active orders
     /// </summary>
-    public virtual INameCollection<string, ITransactionOrderModel> ActiveOrders { get; set; }
+    public virtual IDictionary<string, ITransactionOrderModel> ActiveOrders { get; set; }
 
     /// <summary>
     /// Active positions
     /// </summary>
-    public virtual INameCollection<string, ITransactionPositionModel> ActivePositions { get; set; }
+    public virtual IDictionary<string, ITransactionPositionModel> ActivePositions { get; set; }
 
     /// <summary>
     /// List of instruments
     /// </summary>
-    public virtual INameCollection<string, IInstrumentModel> Instruments { get; set; }
+    public virtual IDictionary<string, IInstrumentModel> Instruments { get; set; }
 
     /// <summary>
     /// Constructor
@@ -114,11 +115,11 @@ namespace Terminal.Core.ModelSpace
       InitialBalance = 0.0;
       Currency = nameof(CurrencyEnum.USD);
 
-      Orders = new IndexCollection<ITransactionOrderModel>();
-      Positions = new IndexCollection<ITransactionPositionModel>();
-      ActiveOrders = new NameCollection<string, ITransactionOrderModel>();
-      ActivePositions = new NameCollection<string, ITransactionPositionModel>();
-      Instruments = new NameCollection<string, IInstrumentModel>();
+      Orders = new ObservableCollection<ITransactionOrderModel>();
+      Positions = new ObservableCollection<ITransactionPositionModel>();
+      ActiveOrders = new Dictionary<string, ITransactionOrderModel>();
+      ActivePositions = new Dictionary<string, ITransactionPositionModel>();
+      Instruments = new Dictionary<string, IInstrumentModel>();
     }
   }
 }

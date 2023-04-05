@@ -1,9 +1,9 @@
-using Terminal.Core.CollectionSpace;
-using Terminal.Core.ModelSpace;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Terminal.Core.ExtensionSpace;
-using System.Collections.Generic;
+using Terminal.Core.ModelSpace;
 
 namespace Terminal.Core.IndicatorSpace
 {
@@ -28,7 +28,7 @@ namespace Terminal.Core.IndicatorSpace
     /// </summary>
     /// <param name="collection"></param>
     /// <returns></returns>
-    public override AverageTrueRangeIndicator Calculate(IIndexCollection<IPointModel> collection)
+    public override AverageTrueRangeIndicator Calculate(ObservableCollection<IPointModel> collection)
     {
       var currentPoint = collection.ElementAtOrDefault(collection.Count - 1);
       var previousPoint = collection.ElementAtOrDefault(collection.Count - 2);

@@ -39,7 +39,7 @@ namespace Terminal.Core.ModelSpace
   /// <summary>
   /// Generic order model
   /// </summary>
-  public class TransactionOrderModel : TransactionModel, ITransactionOrderModel
+  public class OrderModel : TransactionModel, ITransactionOrderModel
   {
     /// <summary>
     /// Side
@@ -69,7 +69,7 @@ namespace Terminal.Core.ModelSpace
     /// <summary>
     /// Constructor
     /// </summary>
-    public TransactionOrderModel()
+    public OrderModel()
     {
       Orders = new List<ITransactionOrderModel>();
       OrderStream = o => { };

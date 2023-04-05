@@ -1,10 +1,10 @@
-using Terminal.Core.CollectionSpace;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Terminal.Core.ExtensionSpace;
 using Terminal.Core.ModelSpace;
 using Terminal.Core.ServiceSpace;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Terminal.Core.IndicatorSpace
 {
@@ -29,7 +29,7 @@ namespace Terminal.Core.IndicatorSpace
     /// </summary>
     /// <param name="collection"></param>
     /// <returns></returns>
-    public override RelativeStrengthIndicator Calculate(IIndexCollection<IPointModel> collection)
+    public override RelativeStrengthIndicator Calculate(ObservableCollection<IPointModel> collection)
     {
       var currentPoint = collection.LastOrDefault();
 

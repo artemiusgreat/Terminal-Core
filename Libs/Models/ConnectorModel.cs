@@ -255,7 +255,7 @@ namespace Terminal.Core.ModelSpace
 
       return new List<ITransactionOrderModel>
       {
-        new TransactionOrderModel
+        new OrderModel
         {
           Price = openPrice,
           Volume = nextOrder.Volume,
@@ -279,7 +279,7 @@ namespace Terminal.Core.ModelSpace
       point.TimeFrame = instrument.TimeFrame;
 
       instrument.Points.Add(point);
-      instrument.PointGroups.Add(point, instrument.TimeFrame);
+      instrument.PointGroups.Add(point, instrument.TimeFrame, true);
 
       return point;
     }

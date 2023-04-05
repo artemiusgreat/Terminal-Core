@@ -1,9 +1,9 @@
-using Terminal.Core.ExtensionSpace;
-using Terminal.Core.ModelSpace;
 using System;
 using System.Collections.Generic;
-using System.Collections.Concurrent;
+using System.Collections.ObjectModel;
 using System.Linq;
+using Terminal.Core.ExtensionSpace;
+using Terminal.Core.ModelSpace;
 
 namespace Terminal.Core.CollectionSpace
 {
@@ -11,7 +11,7 @@ namespace Terminal.Core.CollectionSpace
   /// Collection with aggregation by date and time
   /// </summary>
   /// <typeparam name="T"></typeparam>
-  public class TimeGroupCollection<T> : TimeCollection<T>, ITimeCollection<T> where T : IPointModel
+  public class ObservableTimeCollection<T> : ObservableCollection<T> where T : IPointModel
   {
     /// <summary>
     /// Internal tracker to identify new or existing point in time
@@ -21,7 +21,7 @@ namespace Terminal.Core.CollectionSpace
     /// <summary>
     /// Constructor
     /// </summary>
-    public TimeGroupCollection()
+    public ObservableTimeCollection()
     {
       Indices = new Dictionary<long, int>();
     }
@@ -29,16 +29,38 @@ namespace Terminal.Core.CollectionSpace
     /// <summary>
     /// Update or add item to the collection depending on its date and time 
     /// </summary>
-    public override void Add(T item) => Add(item, item.TimeFrame);
+    /// <param name="item"></param>
+    /// <param name="span"></param>
+    public virtual void Add(T item, TimeSpan? span)
+    {
+      var previous = this.LastOrDefault();
+
+      if (span is not null && previous is not null)
+      {
+        var nextTime = item.Time.Round(span);
+        var previousTime = previous.Time.Round(span);
+
+        if (Equals(previousTime, nextTime))
+        {
+          this[Count - 1] = item;
+          return;
+        }
+      }
+
+      Add(item);
+    }
 
     /// <summary>
     /// Update or add item to the collection depending on its date and time 
     /// </summary>
-    public override void Add(T item, TimeSpan? span)
+    /// <param name="item"></param>
+    /// <param name="span"></param>
+    /// <param name="combine"></param>
+    public virtual void Add(T item, TimeSpan? span, bool combine)
     {
       if (span is null)
       {
-        base.Add(item, span);
+        Add(item);
         return;
       }
 
@@ -56,7 +78,7 @@ namespace Terminal.Core.CollectionSpace
           return;
         }
 
-        base.Add(group, span);
+        Add(group);
 
         Indices[currentTime.Value.Ticks] = Count - 1;
       }

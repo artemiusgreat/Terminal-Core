@@ -6,7 +6,7 @@ namespace Terminal.Core.ValidatorSpace
   /// <summary>
   /// Validation rules
   /// </summary>
-  public class InstrumentFutureValidator : AbstractValidator<IInstrumentFutureModel>
+  public class InstrumentFutureValidator : AbstractValidator<FutureModel>
   {
     public InstrumentFutureValidator()
     {

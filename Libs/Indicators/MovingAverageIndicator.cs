@@ -1,9 +1,9 @@
-using Terminal.Core.CollectionSpace;
-using Terminal.Core.ModelSpace;
-using Terminal.Core.ExtensionSpace;
-using Terminal.Core.ServiceSpace;
-using System.Linq;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using Terminal.Core.ExtensionSpace;
+using Terminal.Core.ModelSpace;
+using Terminal.Core.ServiceSpace;
 
 namespace Terminal.Core.IndicatorSpace
 {
@@ -43,7 +43,7 @@ namespace Terminal.Core.IndicatorSpace
     /// </summary>
     /// <param name="collection"></param>
     /// <returns></returns>
-    public override MovingAverageIndicator Calculate(IIndexCollection<IPointModel> collection)
+    public override MovingAverageIndicator Calculate(ObservableCollection<IPointModel> collection)
     {
       var currentPoint = collection.LastOrDefault();
 

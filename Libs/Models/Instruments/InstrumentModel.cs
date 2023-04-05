@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using Terminal.Core.CollectionSpace;
 
 namespace Terminal.Core.ModelSpace
@@ -79,24 +80,14 @@ namespace Terminal.Core.ModelSpace
     IAccountModel Account { get; set; }
 
     /// <summary>
-    /// Reference to option model
-    /// </summary>
-    IInstrumentOptionModel Option { get; set; }
-
-    /// <summary>
-    /// Reference to future model
-    /// </summary>
-    IInstrumentFutureModel Future { get; set; }
-
-    /// <summary>
     /// List of all ticks from the server
     /// </summary>
-    IIndexCollection<IPointModel> Points { get; set; }
+    ObservableTimeCollection<IPointModel> Points { get; set; }
 
     /// <summary>
     /// List of all ticks from the server aggregated into bars
     /// </summary>
-    ITimeCollection<IPointModel> PointGroups { get; set; }
+    ObservableTimeCollection<IPointModel> PointGroups { get; set; }
   }
 
   /// <summary>
@@ -175,24 +166,14 @@ namespace Terminal.Core.ModelSpace
     public virtual IAccountModel Account { get; set; }
 
     /// <summary>
-    /// Reference to option model
-    /// </summary>
-    public virtual IInstrumentOptionModel Option { get; set; }
-
-    /// <summary>
-    /// Reference to future model
-    /// </summary>
-    public virtual IInstrumentFutureModel Future { get; set; }
-
-    /// <summary>
     /// List of all ticks from the server
     /// </summary>
-    public virtual IIndexCollection<IPointModel> Points { get; set; }
+    public virtual ObservableTimeCollection<IPointModel> Points { get; set; }
 
     /// <summary>
     /// List of all ticks from the server aggregated into bars
     /// </summary>
-    public virtual ITimeCollection<IPointModel> PointGroups { get; set; }
+    public virtual ObservableTimeCollection<IPointModel> PointGroups { get; set; }
 
     /// <summary>
     /// Constructor
@@ -206,8 +187,8 @@ namespace Terminal.Core.ModelSpace
       Commission = 0.0;
       ContractSize = 1.0;
 
-      Points = new IndexCollection<IPointModel>();
-      PointGroups = new TimeGroupCollection<IPointModel>();
+      Points = new ObservableTimeCollection<IPointModel>();
+      PointGroups = new ObservableTimeCollection<IPointModel>();
     }
   }
 }

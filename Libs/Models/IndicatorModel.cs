@@ -1,5 +1,5 @@
-using Terminal.Core.CollectionSpace;
 using System;
+using System.Collections.ObjectModel;
 
 namespace Terminal.Core.ModelSpace
 {
@@ -13,7 +13,7 @@ namespace Terminal.Core.ModelSpace
     /// </summary>
     /// <param name="collection"></param>
     /// <returns></returns>
-    TOutput Calculate(IIndexCollection<TInput> collection);
+    TOutput Calculate(ObservableCollection<TInput> collection);
   }
 
   /// <summary>
@@ -26,7 +26,7 @@ namespace Terminal.Core.ModelSpace
     /// </summary>
     public IndicatorModel()
     {
-      Bar = new PointBarModel();
+      Bar = new BarModel();
       Name = Guid.NewGuid().ToString("N");
     }
 
@@ -35,6 +35,6 @@ namespace Terminal.Core.ModelSpace
     /// </summary>
     /// <param name="collection"></param>
     /// <returns></returns>
-    public virtual TOutput Calculate(IIndexCollection<TInput> collection) => default;
+    public virtual TOutput Calculate(ObservableCollection<TInput> collection) => default;
   }
 }
