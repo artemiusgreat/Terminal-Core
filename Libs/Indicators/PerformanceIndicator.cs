@@ -1,23 +1,24 @@
 using System.Collections.Generic;
 using System.Linq;
-using Terminal.Core.ModelSpace;
+using Terminal.Core.Domains;
+using Terminal.Core.Models;
 
-namespace Terminal.Core.IndicatorSpace
+namespace Terminal.Core.Indicators
 {
-  /// <summary>
-  /// Implementation
-  /// </summary>
-  /// <typeparam name="T"></typeparam>
-  public class PerformanceIndicator : IndicatorModel<IPointModel, PerformanceIndicator>
+    /// <summary>
+    /// Implementation
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class PerformanceIndicator : Indicator<PointModel, PerformanceIndicator>
   {
     /// <summary>
     /// Calculate indicator value
     /// </summary>
     /// <param name="accounts"></param>
     /// <returns></returns>
-    public PerformanceIndicator Calculate(IList<IAccountModel> accounts)
+    public PerformanceIndicator Calculate(IList<IAccount> accounts)
     {
-      Last = accounts.Sum(o => o.Balance + o.ActivePositions.Sum(v => v.Value.GainLossAverageEstimate));
+      Point.Last = accounts.Sum(o => o.Balance + o.ActivePositions.Sum(v => v.Value.GainLossAverageEstimate));
 
       return this;
     }

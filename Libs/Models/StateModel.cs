@@ -1,8 +1,8 @@
-using Terminal.Core.EnumSpace;
+using Terminal.Core.Enums;
 
-namespace Terminal.Core.MessageSpace
+namespace Terminal.Core.Models
 {
-  public class TransactionMessage<T>
+  public class StateModel<T>
   {
     /// <summary>
     /// Event type

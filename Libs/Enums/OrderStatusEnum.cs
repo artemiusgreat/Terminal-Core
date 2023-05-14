@@ -1,4 +1,4 @@
-namespace Terminal.Core.EnumSpace
+namespace Terminal.Core.Enums
 {
   public enum OrderStatusEnum : byte
   {
@@ -8,7 +8,7 @@ namespace Terminal.Core.EnumSpace
     Closed = 3,
     Expired = 4,
     Declined = 5,
-    Cancelled = 6,
+    Canceled = 6,
     Completed = 7,
     PartiallyFilled = 8
   }

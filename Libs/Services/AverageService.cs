@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Terminal.Core.ServiceSpace
+namespace Terminal.Core.Services
 {
   public class AverageService
   {

@@ -2,16 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Terminal.Core.ExtensionSpace;
-using Terminal.Core.ModelSpace;
+using Terminal.Core.Domains;
+using Terminal.Core.Extensions;
+using Terminal.Core.Models;
 
-namespace Terminal.Core.IndicatorSpace
+namespace Terminal.Core.Indicators
 {
-  /// <summary>
-  /// Implementation
-  /// </summary>
-  /// <typeparam name="T"></typeparam>
-  public class AverageTrueRangeIndicator : IndicatorModel<IPointModel, AverageTrueRangeIndicator>
+    /// <summary>
+    /// Implementation
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class AverageTrueRangeIndicator : Indicator<PointModel, AverageTrueRangeIndicator>
   {
     /// <summary>
     /// Number of bars to average
@@ -28,7 +29,7 @@ namespace Terminal.Core.IndicatorSpace
     /// </summary>
     /// <param name="collection"></param>
     /// <returns></returns>
-    public override AverageTrueRangeIndicator Calculate(ObservableCollection<IPointModel> collection)
+    public override AverageTrueRangeIndicator Calculate(ObservableCollection<PointModel> collection)
     {
       var currentPoint = collection.ElementAtOrDefault(collection.Count - 1);
       var previousPoint = collection.ElementAtOrDefault(collection.Count - 2);
@@ -53,9 +54,11 @@ namespace Terminal.Core.IndicatorSpace
         case false: Values[collection.Count - 1] = value; break;
       }
 
-      var series = currentPoint.Series[Name] = currentPoint.Series.Get(Name) ?? new AverageTrueRangeIndicator();
+      var series = currentPoint.Series[Name] =
+        currentPoint.Series.Get(Name) ??
+        new AverageTrueRangeIndicator().Point;
 
-      Last = series.Last = series.Bar.Close = value;
+      Point.Last = series.Last = series.Bar.Close = value;
 
       return this;
     }

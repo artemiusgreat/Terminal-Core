@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Terminal.Core.ExtensionSpace
+namespace Terminal.Core.Extensions
 {
   public static class DictionaryExtensions
   {

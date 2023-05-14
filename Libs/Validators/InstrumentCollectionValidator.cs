@@ -1,13 +1,13 @@
 using FluentValidation;
 using System.Linq;
-using Terminal.Core.ModelSpace;
+using Terminal.Core.Domains;
 
-namespace Terminal.Core.ValidatorSpace
+namespace Terminal.Core.Validators
 {
-  /// <summary>
-  /// Validation rules
-  /// </summary>
-  public class InstrumentCollectionValidator : AbstractValidator<IInstrumentModel>
+    /// <summary>
+    /// Validation rules
+    /// </summary>
+    public class InstrumentCollectionValidator : AbstractValidator<Instrument>
   {
     public InstrumentCollectionValidator()
     {

@@ -2,17 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Terminal.Core.ExtensionSpace;
-using Terminal.Core.ModelSpace;
-using Terminal.Core.ServiceSpace;
+using Terminal.Core.Domains;
+using Terminal.Core.Extensions;
+using Terminal.Core.Models;
+using Terminal.Core.Services;
 
-namespace Terminal.Core.IndicatorSpace
+namespace Terminal.Core.Indicators
 {
-  /// <summary>
-  /// Implementation
-  /// </summary>
-  /// <typeparam name="T"></typeparam>
-  public class ScaleIndicator : IndicatorModel<IPointModel, ScaleIndicator>
+    /// <summary>
+    /// Implementation
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class ScaleIndicator : Indicator<PointModel, ScaleIndicator>
   {
     /// <summary>
     /// Number of bars to average
@@ -49,7 +50,7 @@ namespace Terminal.Core.IndicatorSpace
     /// </summary>
     /// <param name="collection"></param>
     /// <returns></returns>
-    public override ScaleIndicator Calculate(ObservableCollection<IPointModel> collection)
+    public override ScaleIndicator Calculate(ObservableCollection<PointModel> collection)
     {
       var currentPoint = collection.LastOrDefault();
 
@@ -75,9 +76,11 @@ namespace Terminal.Core.IndicatorSpace
         case false: Values[collection.Count - 1] = value; break;
       }
 
-      var series = currentPoint.Series[Name] = currentPoint.Series.Get(Name) ?? new ScaleIndicator();
+      var series = currentPoint.Series[Name] =
+        currentPoint.Series.Get(Name) ??
+        new ScaleIndicator().Point;
 
-      Last = series.Last = series.Bar.Close = comService.LinearWeightAverage(Values, Values.Count - 1, Interval);
+      Point.Last = series.Last = series.Bar.Close = comService.LinearWeightAverage(Values, Values.Count - 1, Interval);
 
       return this;
     }

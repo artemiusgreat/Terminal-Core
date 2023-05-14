@@ -1,22 +1,8 @@
 using Serilog;
 
-namespace Terminal.Core.ServiceSpace
+namespace Terminal.Core.Services
 {
-  /// <summary>
-  /// Definition
-  /// </summary>
-  public interface ILogService
-  {
-    /// <summary>
-    /// Single instance
-    /// </summary>
-    public ILogger Log { get; }
-  }
-
-  /// <summary>
-  /// Service to track account changes, including equity and quotes
-  /// </summary>
-  public class LogService : ILogService
+  public class LogService
   {
     /// <summary>
     /// Logger instance

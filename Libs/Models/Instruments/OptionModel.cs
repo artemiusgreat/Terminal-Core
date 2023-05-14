@@ -1,10 +1,26 @@
 using System;
-using Terminal.Core.EnumSpace;
+using Terminal.Core.Domains;
+using Terminal.Core.Enums;
 
-namespace Terminal.Core.ModelSpace
+namespace Terminal.Core.Models
 {
-  public class OptionModel
+    public class OptionModel : ICloneable
   {
+    /// <summary>
+    /// Name
+    /// </summary>
+    public virtual string Name { get; set; }
+
+    /// <summary>
+    /// The name of the underlying instrument
+    /// </summary>
+    public virtual string BaseName { get; set; }
+
+    /// <summary>
+    /// Strike price
+    /// </summary>
+    public virtual double? Strike { get; set; }
+
     /// <summary>
     /// Contract size
     /// </summary>
@@ -14,16 +30,6 @@ namespace Terminal.Core.ModelSpace
     /// Open interest
     /// </summary>
     public virtual double? OpenInterest { get; set; }
-
-    /// <summary>
-    /// Strike price
-    /// </summary>
-    public virtual double? Strike { get; set; }
-
-    /// <summary>
-    /// The name of the underlying instrument
-    /// </summary>
-    public virtual string Symbol { get; set; }
 
     /// <summary>
     /// CALL or PUT
@@ -36,14 +42,9 @@ namespace Terminal.Core.ModelSpace
     public virtual DateTime? ExpirationDate { get; set; }
 
     /// <summary>
-    /// Reference to the complex data point
-    /// </summary>
-    public virtual BarModel Bar { get; set; }
-
-    /// <summary>
     /// Instrument
     /// </summary>
-    public virtual IInstrumentModel Instrument { get; set; }
+    public virtual IInstrument Instrument { get; set; }
 
     /// <summary>
     /// Constructor
@@ -51,7 +52,11 @@ namespace Terminal.Core.ModelSpace
     public OptionModel()
     {
       Leverage = 100;
-      Bar = new BarModel();
     }
+
+    /// <summary>
+    /// Clone
+    /// </summary>
+    public virtual object Clone() => MemberwiseClone() as OptionModel;
   }
 }

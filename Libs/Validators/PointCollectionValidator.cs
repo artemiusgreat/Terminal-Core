@@ -1,18 +1,18 @@
 using FluentValidation;
-using Terminal.Core.ModelSpace;
+using Terminal.Core.Models;
 
-namespace Terminal.Core.ValidatorSpace
+namespace Terminal.Core.Validators
 {
   /// <summary>
   /// Validation rules
   /// </summary>
-  public class PointCollectionValidator : AbstractValidator<IPointModel>
+  public class PointCollectionValidator : AbstractValidator<PointModel>
   {
     public PointCollectionValidator()
     {
       Include(new PointVolumeValidator());
 
-      RuleFor(o => o.Series).NotNull();
+      RuleFor(o => o.Series).NotEmpty();
     }
   }
 }

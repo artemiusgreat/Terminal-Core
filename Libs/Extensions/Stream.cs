@@ -2,7 +2,7 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Terminal.Core.ExtensionSpace
+namespace Terminal.Core.Extensions
 {
   public static class StreamExtensions
   {

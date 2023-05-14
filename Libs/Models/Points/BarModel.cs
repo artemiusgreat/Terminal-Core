@@ -1,6 +1,8 @@
-namespace Terminal.Core.ModelSpace
+using System;
+
+namespace Terminal.Core.Models
 {
-  public class BarModel : BaseModel
+  public class BarModel : ICloneable
   {
     /// <summary>
     /// Lowest price of the bar
@@ -21,5 +23,10 @@ namespace Terminal.Core.ModelSpace
     /// Close price of the bar
     /// </summary>
     public virtual double? Close { get; set; }
+
+    /// <summary>
+    /// Clone
+    /// </summary>
+    public virtual object Clone() => MemberwiseClone() as BarModel;
   }
 }

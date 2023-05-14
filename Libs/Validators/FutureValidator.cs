@@ -6,14 +6,12 @@ namespace Terminal.Core.Validators
   /// <summary>
   /// Validation rules
   /// </summary>
-  public class PointValidator : AbstractValidator<PointModel>
+  public class FutureValidator : AbstractValidator<FutureModel>
   {
-    public PointValidator()
+    public FutureValidator()
     {
-      RuleFor(o => o.Bid).NotEmpty();
-      RuleFor(o => o.Ask).NotEmpty();
-      RuleFor(o => o.Last).NotEmpty();
-      RuleFor(o => o.Time).NotEmpty();
+      RuleFor(o => o.Name).NotEmpty();
+      RuleFor(o => o.ExpirationDate).NotEmpty();
       RuleFor(o => o.Instrument).NotEmpty().SetValidator(new InstrumentValidator());
     }
   }

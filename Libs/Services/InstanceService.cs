@@ -1,22 +1,11 @@
-namespace Terminal.Core.ServiceSpace
+namespace Terminal.Core.Services
 {
-  /// <summary>
-  /// Definition
-  /// </summary>
-  public interface IInstanceManager<T>
-  {
-    /// <summary>
-    /// Single instance
-    /// </summary>
-    static T Instance { get; }
-  }
-
   /// <summary>
   /// Service to track account changes, including equity and quotes
   /// </summary>
-  public class InstanceService<T> : IInstanceManager<T> where T: new()
+  public class InstanceService<T> where T: new()
   {
-    private static readonly T _instance = new T();
+    private static readonly T _instance = new();
 
     /// <summary>
     /// Single instance

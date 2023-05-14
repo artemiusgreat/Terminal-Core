@@ -1,97 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Terminal.Core.EnumSpace;
-using Terminal.Core.ServiceSpace;
-using Terminal.Core.ValidatorSpace;
+using Terminal.Core.Enums;
 
-namespace Terminal.Core.ModelSpace
+namespace Terminal.Core.Models
 {
-  /// <summary>
-  /// Generic position model
-  /// </summary>
-  public interface ITransactionPositionModel : ITransactionOrderModel
-  {
-    /// <summary>
-    /// Actual PnL in account's currency
-    /// </summary>
-    double? GainLoss { get; set; }
-
-    /// <summary>
-    /// Min possible PnL in account's currency
-    /// </summary>
-    double? GainLossMin { get; set; }
-
-    /// <summary>
-    /// Max possible PnL in account's currency
-    /// </summary>
-    double? GainLossMax { get; set; }
-
-    /// <summary>
-    /// Actual PnL in points
-    /// </summary>
-    double? GainLossPoints { get; set; }
-
-    /// <summary>
-    /// Min possible PnL in points
-    /// </summary>
-    double? GainLossPointsMin { get; set; }
-
-    /// <summary>
-    /// Max possible PnL in points
-    /// </summary>
-    double? GainLossPointsMax { get; set; }
-
-    /// <summary>
-    /// Estimated PnL in account's currency
-    /// </summary>
-    double? GainLossEstimate { get; }
-
-    /// <summary>
-    /// Estimated PnL in points
-    /// </summary>
-    double? GainLossPointsEstimate { get; }
-
-    /// <summary>
-    /// Cummulative estimated PnL in account's currency for all positions in the same direction
-    /// </summary>
-    double? GainLossAverageEstimate { get; }
-
-    /// <summary>
-    /// Cummulative estimated PnL in points for all positions in the same direction
-    /// </summary>
-    double? GainLossPointsAverageEstimate { get; }
-
-    /// <summary>
-    /// Open price
-    /// </summary>
-    double? OpenPrice { get; set; }
-
-    /// <summary>
-    /// Close price
-    /// </summary>
-    double? ClosePrice { get; set; }
-
-    /// <summary>
-    /// Close price estimate
-    /// </summary>
-    double? ClosePriceEstimate { get; }
-
-    /// <summary>
-    /// Time stamp of when position was closed or replaced with the new one
-    /// </summary>
-    DateTime? CloseTime { get; set; }
-
-    /// <summary>
-    /// Sum of all open prices added to the position
-    /// </summary>
-    IList<ITransactionOrderModel> OpenPrices { get; set; }
-  }
-
-  /// <summary>
-  /// Generic position model
-  /// </summary>
-  public class PositionModel : OrderModel, ITransactionPositionModel
+  public class PositionModel : ICloneable
   {
     /// <summary>
     /// Actual PnL measured in account's currency
@@ -124,24 +38,14 @@ namespace Terminal.Core.ModelSpace
     public virtual double? GainLossPointsMax { get; set; }
 
     /// <summary>
-    /// Open price
+    /// Aggregated order
     /// </summary>
-    public virtual double? OpenPrice { get; set; }
+    public virtual OrderModel Order { get; set; }
 
     /// <summary>
-    /// Close price
+    /// Related orders
     /// </summary>
-    public virtual double? ClosePrice { get; set; }
-
-    /// <summary>
-    /// Time stamp of when position was closed or replaced with the new one
-    /// </summary>
-    public virtual DateTime? CloseTime { get; set; }
-
-    /// <summary>
-    /// Sum of all open prices added to the position
-    /// </summary>
-    public virtual IList<ITransactionOrderModel> OpenPrices { get; set; }
+    public virtual IList<OrderModel> Orders { get; set; }
 
     /// <summary>
     /// Close price estimate
@@ -150,11 +54,11 @@ namespace Terminal.Core.ModelSpace
     {
       get
       {
-        var point = Instrument.Points.LastOrDefault();
+        var point = Order.Transaction.Instrument.Points.LastOrDefault();
 
         if (point is not null)
         {
-          switch (Side)
+          switch (Order.Side)
           {
             case OrderSideEnum.Buy: return point.Bid;
             case OrderSideEnum.Sell: return point.Ask;
@@ -168,12 +72,12 @@ namespace Terminal.Core.ModelSpace
     /// <summary>
     /// Estimated PnL in account's currency
     /// </summary>
-    public virtual double? GainLossEstimate => GetGainLossEstimate(Price);
+    public virtual double? GainLossEstimate => GetGainLossEstimate(Order.Transaction.Price);
 
     /// <summary>
     /// Estimated PnL in points
     /// </summary>
-    public virtual double? GainLossPointsEstimate => GetGainLossPointsEstimate(Price);
+    public virtual double? GainLossPointsEstimate => GetGainLossPointsEstimate(Order.Transaction.Price);
 
     /// <summary>
     /// Cummulative estimated PnL in account's currency for all positions in the same direction
@@ -194,13 +98,13 @@ namespace Terminal.Core.ModelSpace
     {
       var direction = 0;
 
-      switch (Side)
+      switch (Order.Side)
       {
         case OrderSideEnum.Buy: direction = 1; break;
         case OrderSideEnum.Sell: direction = -1; break;
       }
 
-      var estimate = ((ClosePriceEstimate - OpenPrice) * direction) ?? 0.0;
+      var estimate = ((ClosePriceEstimate - Order.Transaction.Price) * direction) ?? 0.0;
 
       if (price is not null)
       {
@@ -220,8 +124,9 @@ namespace Terminal.Core.ModelSpace
     /// <returns></returns>
     protected virtual double? GetGainLossEstimate(double? price = null)
     {
-      var step = Instrument.StepValue / Instrument.StepSize;
-      var estimate = Volume * (GetGainLossPointsEstimate(price) * step - Instrument.Commission) ?? 0.0;
+      var action = Order.Transaction;
+      var step = action.Instrument.StepValue / action.Instrument.StepSize;
+      var estimate = action.Volume * (GetGainLossPointsEstimate(price) * step - action.Instrument.Commission) ?? 0.0;
 
       if (price is not null)
       {
@@ -237,7 +142,19 @@ namespace Terminal.Core.ModelSpace
     /// </summary>
     public PositionModel()
     {
-      OpenPrices = new List<ITransactionOrderModel>();
+      Orders = new List<OrderModel>();
+    }
+
+    /// <summary>
+    /// Clone
+    /// </summary>
+    public virtual object Clone()
+    {
+      var clone = MemberwiseClone() as PositionModel;
+
+      clone.Order = Order?.Clone() as OrderModel;
+
+      return clone;
     }
   }
 }

@@ -1,9 +1,15 @@
 using System;
+using Terminal.Core.Domains;
 
-namespace Terminal.Core.ModelSpace
+namespace Terminal.Core.Models
 {
-  public class FutureModel
+    public class FutureModel : ICloneable
   {
+    /// <summary>
+    /// Name
+    /// </summary>
+    public virtual string Name { get; set; }
+
     /// <summary>
     /// Expiration date
     /// </summary>
@@ -12,6 +18,11 @@ namespace Terminal.Core.ModelSpace
     /// <summary>
     /// Instrument
     /// </summary>
-    public virtual IInstrumentModel Instrument { get; set; }
+    public virtual IInstrument Instrument { get; set; }
+
+    /// <summary>
+    /// Clone
+    /// </summary>
+    public virtual object Clone() => MemberwiseClone() as FutureModel;
   }
 }

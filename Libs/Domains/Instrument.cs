@@ -1,43 +1,15 @@
 using System;
-using System.Collections.ObjectModel;
-using Terminal.Core.CollectionSpace;
+using Terminal.Core.Collections;
+using Terminal.Core.Models;
 
-namespace Terminal.Core.ModelSpace
+namespace Terminal.Core.Domains
 {
-  /// <summary>
-  /// Generic instrument definition
-  /// </summary>
-  public interface IInstrumentModel : IBaseModel
+  public interface IInstrument
   {
     /// <summary>
-    /// Bid price
+    /// Name
     /// </summary>
-    double? Bid { get; set; }
-
-    /// <summary>
-    /// Ask price
-    /// </summary>
-    double? Ask { get; set; }
-
-    /// <summary>
-    /// Current price
-    /// </summary>
-    double? Price { get; set; }
-
-    /// <summary>
-    /// Bid volume
-    /// </summary>
-    double? BidSize { get; set; }
-
-    /// <summary>
-    /// Ask volume
-    /// </summary>
-    double? AskSize { get; set; }
-
-    /// <summary>
-    /// Overal volume
-    /// </summary>
-    double? Size { get; set; }
+    string Name { get; set; }
 
     /// <summary>
     /// Long swap rate for keeping position overnight
@@ -75,55 +47,22 @@ namespace Terminal.Core.ModelSpace
     TimeSpan? TimeFrame { get; set; }
 
     /// <summary>
-    /// Reference to the account
-    /// </summary>
-    IAccountModel Account { get; set; }
-
-    /// <summary>
     /// List of all ticks from the server
     /// </summary>
-    ObservableTimeCollection<IPointModel> Points { get; set; }
+    ObservableTimeCollection<PointModel> Points { get; set; }
 
     /// <summary>
     /// List of all ticks from the server aggregated into bars
     /// </summary>
-    ObservableTimeCollection<IPointModel> PointGroups { get; set; }
+    ObservableTimeCollection<PointModel> PointGroups { get; set; }
   }
 
-  /// <summary>
-  /// Generic instrument definition
-  /// </summary>
-  public class InstrumentModel : BaseModel, IInstrumentModel
+  public class Instrument : IInstrument
   {
     /// <summary>
-    /// Bid price
+    /// Name
     /// </summary>
-    public virtual double? Bid { get; set; }
-
-    /// <summary>
-    /// Ask price
-    /// </summary>
-    public virtual double? Ask { get; set; }
-
-    /// <summary>
-    /// Current price
-    /// </summary>
-    public virtual double? Price { get; set; }
-
-    /// <summary>
-    /// Bid volume
-    /// </summary>
-    public virtual double? BidSize { get; set; }
-
-    /// <summary>
-    /// Ask volume
-    /// </summary>
-    public virtual double? AskSize { get; set; }
-
-    /// <summary>
-    /// Overal volume
-    /// </summary>
-    public virtual double? Size { get; set; }
+    public virtual string Name { get; set; }
 
     /// <summary>
     /// Long swap rate for keeping position overnight
@@ -161,24 +100,19 @@ namespace Terminal.Core.ModelSpace
     public virtual TimeSpan? TimeFrame { get; set; }
 
     /// <summary>
-    /// Reference to the account
-    /// </summary>
-    public virtual IAccountModel Account { get; set; }
-
-    /// <summary>
     /// List of all ticks from the server
     /// </summary>
-    public virtual ObservableTimeCollection<IPointModel> Points { get; set; }
+    public virtual ObservableTimeCollection<PointModel> Points { get; set; }
 
     /// <summary>
     /// List of all ticks from the server aggregated into bars
     /// </summary>
-    public virtual ObservableTimeCollection<IPointModel> PointGroups { get; set; }
+    public virtual ObservableTimeCollection<PointModel> PointGroups { get; set; }
 
     /// <summary>
     /// Constructor
     /// </summary>
-    public InstrumentModel()
+    public Instrument()
     {
       SwapLong = 0.0;
       SwapShort = 0.0;
@@ -187,8 +121,8 @@ namespace Terminal.Core.ModelSpace
       Commission = 0.0;
       ContractSize = 1.0;
 
-      Points = new ObservableTimeCollection<IPointModel>();
-      PointGroups = new ObservableTimeCollection<IPointModel>();
+      Points = new ObservableTimeCollection<PointModel>();
+      PointGroups = new ObservableTimeCollection<PointModel>();
     }
   }
 }

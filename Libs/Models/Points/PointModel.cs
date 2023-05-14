@@ -1,73 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Terminal.Core.Domains;
 
-namespace Terminal.Core.ModelSpace
+namespace Terminal.Core.Models
 {
-  /// <summary>
-  /// Definition
-  /// </summary>
-  public interface IPointModel : IBaseModel
-  {
-    /// <summary>
-    /// Bid
-    /// </summary>
-    double? Bid { get; set; }
-
-    /// <summary>
-    /// Ask
-    /// </summary>
-    double? Ask { get; set; }
-
-    /// <summary>
-    /// Size of the bid on the current tick
-    /// </summary>
-    double? BidSize { get; set; }
-
-    /// <summary>
-    /// Size of the ask on the current tick
-    /// </summary>
-    double? AskSize { get; set; }
-
-    /// <summary>
-    /// Last price or value
-    /// </summary>
-    double? Last { get; set; }
-
-    /// <summary>
-    /// Time stamp
-    /// </summary>
-    DateTime? Time { get; set; }
-
-    /// <summary>
-    /// Aggregation period for the quotes
-    /// </summary>
-    TimeSpan? TimeFrame { get; set; }
-
-    /// <summary>
-    /// Reference to the complex data point
-    /// </summary>
-    BarModel Bar { get; set; }
-
-    /// <summary>
-    /// Reference to the account
-    /// </summary>
-    IAccountModel Account { get; set; }
-
-    /// <summary>
-    /// Reference to the instrument
-    /// </summary>
-    IInstrumentModel Instrument { get; set; }
-
-    /// <summary>
-    /// Values from related series synced with the current bar, e.g. averaged indicator calculations for the charts
-    /// </summary>
-    IDictionary<string, IPointModel> Series { get; set; }
-  }
-
-  /// <summary>
-  /// Implementation
-  /// </summary>
-  public class PointModel : BaseModel, IPointModel
+    public class PointModel : ICloneable
   {
     /// <summary>
     /// Bid
@@ -105,11 +42,6 @@ namespace Terminal.Core.ModelSpace
     public virtual TimeSpan? TimeFrame { get; set; }
 
     /// <summary>
-    /// Reference to the account
-    /// </summary>
-    public virtual IAccountModel Account { get; set; }
-
-    /// <summary>
     /// Reference to the complex data point
     /// </summary>
     public virtual BarModel Bar { get; set; }
@@ -117,12 +49,12 @@ namespace Terminal.Core.ModelSpace
     /// <summary>
     /// Reference to the instrument
     /// </summary>
-    public virtual IInstrumentModel Instrument { get; set; }
+    public virtual IInstrument Instrument { get; set; }
 
     /// <summary>
     /// Values from related series synced with the current data point, e.g. averaged indicator calculations for the charts
     /// </summary>
-    public virtual IDictionary<string, IPointModel> Series { get; set; }
+    public virtual IDictionary<string, PointModel> Series { get; set; }
 
     /// <summary>
     /// Constructor
@@ -131,21 +63,18 @@ namespace Terminal.Core.ModelSpace
     {
       Time = DateTime.Now;
 
-      Bar = new BarModel();
-      Account = new AccountModel();
-      Instrument = new InstrumentModel();
-      Series = new Dictionary<string, IPointModel>();
+      Series = new Dictionary<string, PointModel>();
     }
 
     /// <summary>
     /// Clone
     /// </summary>
     /// <returns></returns>
-    public override object Clone()
+    public virtual object Clone()
     {
-      var clone = base.Clone() as IPointModel;
+      var clone = MemberwiseClone() as PointModel;
 
-      clone.Bar = Bar.Clone() as BarModel;
+      clone.Bar = Bar?.Clone() as BarModel;
 
       return clone;
     }

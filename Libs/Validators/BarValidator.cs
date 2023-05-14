@@ -1,14 +1,14 @@
 using FluentValidation;
-using Terminal.Core.ModelSpace;
+using Terminal.Core.Models;
 
-namespace Terminal.Core.ValidatorSpace
+namespace Terminal.Core.Validators
 {
   /// <summary>
   /// Validation rules
   /// </summary>
-  public class PointBarValidator : AbstractValidator<BarModel>
+  public class BarValidator : AbstractValidator<BarModel>
   {
-    public PointBarValidator()
+    public BarValidator()
     {
       RuleFor(o => o.Low).NotEmpty();
       RuleFor(o => o.High).NotEmpty();

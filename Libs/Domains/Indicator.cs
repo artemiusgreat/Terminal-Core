@@ -1,13 +1,23 @@
-using System;
 using System.Collections.ObjectModel;
+using Terminal.Core.Models;
 
-namespace Terminal.Core.ModelSpace
+namespace Terminal.Core.Domains
 {
   /// <summary>
   /// Definition
   /// </summary>
-  public interface IIndicator<TInput, TOutput> : IPointModel where TInput : IPointModel
+  public interface IIndicator<TInput, TOutput> where TInput : PointModel
   {
+    /// <summary>
+    /// Name
+    /// </summary>
+    string Name { get; set; }
+
+    /// <summary>
+    /// Point
+    /// </summary>
+    PointModel Point { get; set; }
+
     /// <summary>
     /// Calculate indicator values
     /// </summary>
@@ -19,22 +29,30 @@ namespace Terminal.Core.ModelSpace
   /// <summary>
   /// Implementation
   /// </summary>
-  public class IndicatorModel<TInput, TOutput> : PointModel, IIndicator<TInput, TOutput> where TInput : IPointModel
+  public class Indicator<TInput, TOutput> : IIndicator<TInput, TOutput> where TInput : PointModel
   {
+    /// <summary>
+    /// Name
+    /// </summary>
+    public virtual string Name { get; set; }
+
+    /// <summary>
+    /// Point
+    /// </summary>
+    public virtual PointModel Point { get; set; }
+
     /// <summary>
     /// Constructor
     /// </summary>
-    public IndicatorModel()
+    public Indicator()
     {
-      Bar = new BarModel();
-      Name = Guid.NewGuid().ToString("N");
+      Point = new();
     }
 
     /// <summary>
     /// Calculate indicator values
     /// </summary>
     /// <param name="collection"></param>
-    /// <returns></returns>
     public virtual TOutput Calculate(ObservableCollection<TInput> collection) => default;
   }
 }

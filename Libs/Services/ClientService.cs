@@ -1,4 +1,4 @@
-using Terminal.Core.ExtensionSpace;
+using Terminal.Core.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,75 +8,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace Terminal.Core.ServiceSpace
+namespace Terminal.Core.Services
 {
-  /// <summary>
-  /// HTTP service
-  /// </summary>
-  public interface IClientService : IDisposable
-  {
-    /// <summary>
-    /// Max execution time
-    /// </summary>
-    TimeSpan Timeout { get; set; }
-
-    /// <summary>
-    /// Instance
-    /// </summary>
-    HttpClient Client { get; }
-
-    /// <summary>
-    /// Send GET request
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="query"></param>
-    /// <param name="headers"></param>
-    /// <param name="cts"></param>
-    /// <returns></returns>
-    Task<T> Get<T>(
-      string source,
-      IDictionary<dynamic, dynamic> query = null,
-      IDictionary<dynamic, dynamic> headers = null,
-      CancellationTokenSource cts = null);
-
-    /// <summary>
-    /// Send POST request
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="query"></param>
-    /// <param name="headers"></param>
-    /// <param name="content"></param>
-    /// <param name="cts"></param>
-    /// <returns></returns>
-    Task<T> Post<T>(
-      string source,
-      IDictionary<dynamic, dynamic> query = null,
-      IDictionary<dynamic, dynamic> headers = null,
-      HttpContent content = null,
-      CancellationTokenSource cts = null);
-
-    /// <summary>
-    /// Stream HTTP content
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="query"></param>
-    /// <param name="headers"></param>
-    /// <param name="cts"></param>
-    /// <returns></returns>
-    Task<Stream> Stream(
-      string source,
-      IDictionary<dynamic, dynamic> query = null,
-      IDictionary<dynamic, dynamic> headers = null,
-      CancellationTokenSource cts = null);
-  }
-
-  /// <summary>
-  /// Service to track account changes, including equity and quotes
-  /// </summary>
-  public class ClientService : IClientService
+  public class ClientService
   {
     /// <summary>
     /// Max execution time

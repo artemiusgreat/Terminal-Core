@@ -1,23 +1,12 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
-namespace Terminal.Core.ServiceSpace
+namespace Terminal.Core.Services
 {
   /// <summary>
   /// Cache
   /// </summary>
-  public interface ICacheService<TKey, TValue>
-  {
-    /// <summary>
-    /// Single instance
-    /// </summary>
-    IDictionary<TKey, TValue> Cache { get; }
-  }
-
-  /// <summary>
-  /// Cache
-  /// </summary>
-  public class CacheService<TKey, TValue> : ICacheService<TKey, TValue>
+  public class CacheService<TKey, TValue>
   {
     /// <summary>
     /// Logger instance

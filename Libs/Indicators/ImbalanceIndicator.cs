@@ -1,15 +1,16 @@
 using System.Collections.ObjectModel;
 using System.Linq;
-using Terminal.Core.ExtensionSpace;
-using Terminal.Core.ModelSpace;
+using Terminal.Core.Domains;
+using Terminal.Core.Extensions;
+using Terminal.Core.Models;
 
-namespace Terminal.Core.IndicatorSpace
+namespace Terminal.Core.Indicators
 {
-  /// <summary>
-  /// Implementation
-  /// </summary>
-  /// <typeparam name="T"></typeparam>
-  public class ImbalanceIndicator : IndicatorModel<IPointModel, ImbalanceIndicator>
+    /// <summary>
+    /// Implementation
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class ImbalanceIndicator : Indicator<PointModel, ImbalanceIndicator>
   {
     /// <summary>
     /// Calculate indicator value
@@ -17,7 +18,7 @@ namespace Terminal.Core.IndicatorSpace
     /// <param name="collection"></param>
     /// <param name="side"></param>
     /// <returns></returns>
-    public ImbalanceIndicator Calculate(ObservableCollection<IPointModel> collection, int side = 0)
+    public ImbalanceIndicator Calculate(ObservableCollection<PointModel> collection, int side = 0)
     {
       var currentPoint = collection.LastOrDefault();
 
@@ -27,7 +28,9 @@ namespace Terminal.Core.IndicatorSpace
       }
 
       var value = 0.0;
-      var seriesItem = currentPoint.Series[Name] = currentPoint.Series.Get(Name) ?? new ImbalanceIndicator();
+      var seriesItem = currentPoint.Series[Name] =
+        currentPoint.Series.Get(Name) ??
+        new ImbalanceIndicator().Point;
 
       switch (side)
       {
@@ -36,7 +39,7 @@ namespace Terminal.Core.IndicatorSpace
         case -1: value = currentPoint.BidSize.Value; break;
       }
 
-      Last = Bar.Close = seriesItem.Last = seriesItem.Bar.Close = value;
+      Point.Last = Point.Bar.Close = seriesItem.Last = seriesItem.Bar.Close = value;
 
       return this;
     }

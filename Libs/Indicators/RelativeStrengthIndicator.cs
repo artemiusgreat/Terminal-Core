@@ -2,17 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Terminal.Core.ExtensionSpace;
-using Terminal.Core.ModelSpace;
-using Terminal.Core.ServiceSpace;
+using Terminal.Core.Domains;
+using Terminal.Core.Extensions;
+using Terminal.Core.Models;
+using Terminal.Core.Services;
 
-namespace Terminal.Core.IndicatorSpace
+namespace Terminal.Core.Indicators
 {
-  /// <summary>
-  /// Implementation
-  /// </summary>
-  /// <typeparam name="T"></typeparam>
-  public class RelativeStrengthIndicator : IndicatorModel<IPointModel, RelativeStrengthIndicator>
+    /// <summary>
+    /// Implementation
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class RelativeStrengthIndicator : Indicator<PointModel, RelativeStrengthIndicator>
   {
     /// <summary>
     /// Number of bars to average
@@ -29,7 +30,7 @@ namespace Terminal.Core.IndicatorSpace
     /// </summary>
     /// <param name="collection"></param>
     /// <returns></returns>
-    public override RelativeStrengthIndicator Calculate(ObservableCollection<IPointModel> collection)
+    public override RelativeStrengthIndicator Calculate(ObservableCollection<PointModel> collection)
     {
       var currentPoint = collection.LastOrDefault();
 
@@ -65,9 +66,11 @@ namespace Terminal.Core.IndicatorSpace
         case false: Values[collection.Count - 1] = value; break;
       }
 
-      var series = currentPoint.Series[Name] = currentPoint.Series.Get(Name) ?? new RelativeStrengthIndicator();
+      var series = currentPoint.Series[Name] =
+        currentPoint.Series.Get(Name) ??
+        new RelativeStrengthIndicator().Point;
 
-      Last = series.Last = series.Bar.Close = value;
+      Point.Last = series.Last = series.Bar.Close = value;
 
       return this;
     }

@@ -2,16 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Terminal.Core.ExtensionSpace;
-using Terminal.Core.ModelSpace;
+using Terminal.Core.Extensions;
+using Terminal.Core.Models;
 
-namespace Terminal.Core.CollectionSpace
+namespace Terminal.Core.Collections
 {
   /// <summary>
   /// Collection with aggregation by date and time
   /// </summary>
   /// <typeparam name="T"></typeparam>
-  public class ObservableTimeCollection<T> : ObservableCollection<T> where T : IPointModel
+  public class ObservableTimeCollection<T> : ObservableCollection<T> where T : PointModel
   {
     /// <summary>
     /// Internal tracker to identify new or existing point in time

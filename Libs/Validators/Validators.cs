@@ -1,37 +1,38 @@
+using FluentValidation;
 using System.Collections.Generic;
-using Terminal.Core.ServiceSpace;
+using Terminal.Core.Services;
 
-namespace Terminal.Core.ValidatorSpace
+namespace Terminal.Core.Validators
 {
   /// <summary>
   /// Validation cache
   /// </summary>
   public class Validators
   {
-    public static IDictionary<string, dynamic> Instances { get; set; }
+    public static IDictionary<string, IValidator> Instances { get; set; }
 
     /// <summary>
     /// Constructor
     /// </summary>
     public Validators()
     {
-      Instances = new Dictionary<string, dynamic>
+      Instances = new Dictionary<string, IValidator>
       {
         [nameof(PointValidator)] = InstanceService<PointValidator>.Instance,
+        [nameof(PointVolumeValidator)] = InstanceService<PointVolumeValidator>.Instance,
         [nameof(PointCollectionValidator)] = InstanceService<PointCollectionValidator>.Instance,
-        [nameof(PointBarValidator)] = InstanceService<PointBarValidator>.Instance,
+        [nameof(BarValidator)] = InstanceService<BarValidator>.Instance,
         [nameof(AccountValidator)] = InstanceService<AccountValidator>.Instance,
         [nameof(AccountCollectionValidator)] = InstanceService<AccountCollectionValidator>.Instance,
-        [nameof(ConnectorValidator)] = InstanceService<ConnectorValidator>.Instance,
         [nameof(InstrumentValidator)] = InstanceService<InstrumentValidator>.Instance,
         [nameof(InstrumentCollectionValidator)] = InstanceService<InstrumentCollectionValidator>.Instance,
-        [nameof(InstrumentOptionValidator)] = InstanceService<InstrumentOptionValidator>.Instance,
-        [nameof(InstrumentFutureValidator)] = InstanceService<InstrumentFutureValidator>.Instance,
+        [nameof(OptionValidator)] = InstanceService<OptionValidator>.Instance,
+        [nameof(FutureValidator)] = InstanceService<FutureValidator>.Instance,
         [nameof(TransactionValidator)] = InstanceService<TransactionValidator>.Instance,
-        [nameof(TransactionOrderValidator)] = InstanceService<TransactionOrderValidator>.Instance,
-        [nameof(TransactionOrderPriceValidator)] = InstanceService<TransactionOrderPriceValidator>.Instance,
-        [nameof(TransactionPositionValidator)] = InstanceService<TransactionPositionValidator>.Instance,
-        [nameof(TransactionPositionGainLossValidator)] = InstanceService<TransactionPositionGainLossValidator>.Instance
+        [nameof(OrderValidator)] = InstanceService<OrderValidator>.Instance,
+        [nameof(OrderPriceValidator)] = InstanceService<OrderPriceValidator>.Instance,
+        [nameof(PositionValidator)] = InstanceService<PositionValidator>.Instance,
+        [nameof(PositionGainLossValidator)] = InstanceService<PositionGainLossValidator>.Instance
       };
     }
   }

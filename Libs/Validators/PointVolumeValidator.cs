@@ -1,12 +1,12 @@
 using FluentValidation;
-using Terminal.Core.ModelSpace;
+using Terminal.Core.Models;
 
-namespace Terminal.Core.ValidatorSpace
+namespace Terminal.Core.Validators
 {
   /// <summary>
   /// Validation rules
   /// </summary>
-  public class PointVolumeValidator : AbstractValidator<IPointModel>
+  public class PointVolumeValidator : AbstractValidator<PointModel>
   {
     public PointVolumeValidator()
     {

@@ -1,4 +1,4 @@
-namespace Terminal.Core.EnumSpace
+namespace Terminal.Core.Enums
 {
   public enum OperationEnum : byte
   {

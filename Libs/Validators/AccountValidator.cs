@@ -1,18 +1,19 @@
 using FluentValidation;
-using Terminal.Core.ModelSpace;
+using Terminal.Core.Domains;
 
-namespace Terminal.Core.ValidatorSpace
+namespace Terminal.Core.Validators
 {
-  /// <summary>
-  /// Validation rules
-  /// </summary>
-  public class AccountValidator : AbstractValidator<IAccountModel>
+    /// <summary>
+    /// Validation rules
+    /// </summary>
+    public class AccountValidator : AbstractValidator<IAccount>
   {
     public AccountValidator()
     {
-      RuleFor(o => o.Leverage).NotEmpty();
+      RuleFor(o => o.Name).NotEmpty();
       RuleFor(o => o.Balance).NotEmpty();
       RuleFor(o => o.InitialBalance).NotEmpty();
+      RuleFor(o => o.Leverage).NotEmpty();
       RuleFor(o => o.Currency).NotEmpty();
     }
   }

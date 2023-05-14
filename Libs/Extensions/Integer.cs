@@ -1,4 +1,4 @@
-namespace Terminal.Core.ExtensionSpace
+namespace Terminal.Core.Extensions
 {
   public static class IntegerExtensions
   {

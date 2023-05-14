@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Terminal.Core.EnumSpace;
+using Terminal.Core.Enums;
+using Terminal.Core.Models;
 
-namespace Terminal.Core.ModelSpace
+namespace Terminal.Core.Domains
 {
-  /// <summary>
-  /// Generic account interface
-  /// </summary>
-  public interface IAccountModel : IBaseModel
+    /// <summary>
+    /// Generic account interface
+    /// </summary>
+    public interface IAccount
   {
     /// <summary>
     /// Leverage
@@ -25,6 +26,11 @@ namespace Terminal.Core.ModelSpace
     double? InitialBalance { get; set; }
 
     /// <summary>
+    /// Name
+    /// </summary>
+    string Name { get; set; }
+
+    /// <summary>
     /// Currency
     /// </summary>
     string Currency { get; set; }
@@ -32,33 +38,33 @@ namespace Terminal.Core.ModelSpace
     /// <summary>
     /// History of orders
     /// </summary>
-    ObservableCollection<ITransactionOrderModel> Orders { get; set; }
+    ObservableCollection<OrderModel> Orders { get; set; }
 
     /// <summary>
     /// Completed trades
     /// </summary>
-    ObservableCollection<ITransactionPositionModel> Positions { get; set; }
+    ObservableCollection<PositionModel> Positions { get; set; }
 
     /// <summary>
     /// Active orders
     /// </summary>
-    IDictionary<string, ITransactionOrderModel> ActiveOrders { get; set; }
+    IDictionary<string, OrderModel> ActiveOrders { get; set; }
 
     /// <summary>
     /// Active positions
     /// </summary>
-    IDictionary<string, ITransactionPositionModel> ActivePositions { get; set; }
+    IDictionary<string, PositionModel> ActivePositions { get; set; }
 
     /// <summary>
     /// List of instruments
     /// </summary>
-    IDictionary<string, IInstrumentModel> Instruments { get; set; }
+    IDictionary<string, Instrument> Instruments { get; set; }
   }
 
   /// <summary>
   /// Implementation
   /// </summary>
-  public class AccountModel : BaseModel, IAccountModel
+  public class Account : IAccount
   {
     /// <summary>
     /// Leverage
@@ -76,6 +82,11 @@ namespace Terminal.Core.ModelSpace
     public virtual double? InitialBalance { get; set; }
 
     /// <summary>
+    /// Name
+    /// </summary>
+    public virtual string Name { get; set; }
+
+    /// <summary>
     /// Currency
     /// </summary>
     public virtual string Currency { get; set; }
@@ -83,43 +94,43 @@ namespace Terminal.Core.ModelSpace
     /// <summary>
     /// History of completed orders
     /// </summary>
-    public virtual ObservableCollection<ITransactionOrderModel> Orders { get; set; }
+    public virtual ObservableCollection<OrderModel> Orders { get; set; }
 
     /// <summary>
     /// History of completed deals, closed positions
     /// </summary>
-    public virtual ObservableCollection<ITransactionPositionModel> Positions { get; set; }
+    public virtual ObservableCollection<PositionModel> Positions { get; set; }
 
     /// <summary>
     /// Active orders
     /// </summary>
-    public virtual IDictionary<string, ITransactionOrderModel> ActiveOrders { get; set; }
+    public virtual IDictionary<string, OrderModel> ActiveOrders { get; set; }
 
     /// <summary>
     /// Active positions
     /// </summary>
-    public virtual IDictionary<string, ITransactionPositionModel> ActivePositions { get; set; }
+    public virtual IDictionary<string, PositionModel> ActivePositions { get; set; }
 
     /// <summary>
     /// List of instruments
     /// </summary>
-    public virtual IDictionary<string, IInstrumentModel> Instruments { get; set; }
+    public virtual IDictionary<string, Instrument> Instruments { get; set; }
 
     /// <summary>
     /// Constructor
     /// </summary>
-    public AccountModel()
+    public Account()
     {
       Balance = 0.0;
       Leverage = 1.0;
       InitialBalance = 0.0;
       Currency = nameof(CurrencyEnum.USD);
 
-      Orders = new ObservableCollection<ITransactionOrderModel>();
-      Positions = new ObservableCollection<ITransactionPositionModel>();
-      ActiveOrders = new Dictionary<string, ITransactionOrderModel>();
-      ActivePositions = new Dictionary<string, ITransactionPositionModel>();
-      Instruments = new Dictionary<string, IInstrumentModel>();
+      Orders = new ObservableCollection<OrderModel>();
+      Positions = new ObservableCollection<PositionModel>();
+      ActiveOrders = new Dictionary<string, OrderModel>();
+      ActivePositions = new Dictionary<string, PositionModel>();
+      Instruments = new Dictionary<string, Instrument>();
     }
   }
 }
