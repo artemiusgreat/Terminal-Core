@@ -1,3 +1,5 @@
+using FluentValidation.Results;
+using Mapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -211,6 +213,7 @@ namespace Terminal.Core.Domains
     /// <param name="orders"></param>
     protected virtual ResponseModel<OrderModel> ValidateOrders(params OrderModel[] orders)
     {
+      var map = Mapper<ValidationFailure, ErrorModel>.Map;
       var orderRules = InstanceService<OrderPriceValidator>.Instance;
       var response = new ResponseModel<OrderModel>();
 
@@ -218,8 +221,8 @@ namespace Terminal.Core.Domains
       {
         var errors = new List<ErrorModel>();
 
-        errors.AddRange(orderRules.Validate(order).Errors.Select(o => o as ErrorModel));
-        errors.AddRange(order.Orders.SelectMany(o => orderRules.Validate(o).Errors.Select(o => o as ErrorModel)));
+        errors.AddRange(orderRules.Validate(order).Errors.Select(o => map(o, new ErrorModel())));
+        errors.AddRange(order.Orders.SelectMany(o => orderRules.Validate(o).Errors.Select(o => map(o, new ErrorModel()))));
 
         response.Count += errors.Count;
         response.Items.Add(new ResponseItemModel<OrderModel>
