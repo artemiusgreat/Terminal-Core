@@ -5,10 +5,10 @@ using Terminal.Core.Models;
 
 namespace Terminal.Core.Domains
 {
-    /// <summary>
-    /// Generic account interface
-    /// </summary>
-    public interface IAccount
+  /// <summary>
+  /// Generic account interface
+  /// </summary>
+  public interface IAccount
   {
     /// <summary>
     /// Leverage

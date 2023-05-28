@@ -1,4 +1,3 @@
-using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,58 +34,58 @@ namespace Terminal.Core.Domains
     /// <summary>
     /// Restore state and initialize
     /// </summary>
-    Task Connect();
+    Task<IList<ErrorModel>> Connect();
 
     /// <summary>
     /// Save state and dispose
     /// </summary>
-    Task Disconnect();
+    Task<IList<ErrorModel>> Disconnect();
 
     /// <summary>
     /// Continue execution
     /// </summary>
-    Task Subscribe();
+    Task<IList<ErrorModel>> Subscribe();
 
     /// <summary>
     /// Suspend execution
     /// </summary>
-    Task Unsubscribe();
+    Task<IList<ErrorModel>> Unsubscribe();
 
     /// <summary>
     /// Get quote
     /// </summary>
     /// <param name="message"></param>
-    Task<PointModel> GetPoint(PointQueryModel message);
+    Task<ResponseItemModel<PointModel>> GetPoint(PointQueryModel message);
 
     /// <summary>
     /// Get quotes history
     /// </summary>
     /// <param name="message"></param>
-    Task<IList<PointModel>> GetPoints(PointQueryModel message);
+    Task<ResponseItemModel<IList<PointModel>>> GetPoints(PointQueryModel message);
 
     /// <summary>
     /// Get option chains
     /// </summary>
     /// <param name="message"></param>
-    Task<IList<OptionModel>> GetOptions(OptionQueryModel message);
+    Task<ResponseItemModel<IList<OptionModel>>> GetOptions(OptionQueryModel message);
 
     /// <summary>
     /// Send new orders
     /// </summary>
     /// <param name="orders"></param>
-    Task<ResponseModel<OrderModel, IList<ValidationFailure>>> CreateOrders(params OrderModel[] orders);
+    Task<ResponseModel<OrderModel>> CreateOrders(params OrderModel[] orders);
 
     /// <summary>
     /// Update orders
     /// </summary>
     /// <param name="orders"></param>
-    Task<ResponseModel<OrderModel, IList<ValidationFailure>>> UpdateOrders(params OrderModel[] orders);
+    Task<ResponseModel<OrderModel>> UpdateOrders(params OrderModel[] orders);
 
     /// <summary>
     /// Cancel orders
     /// </summary>
     /// <param name="orders"></param>
-    Task<ResponseModel<OrderModel, IList<ValidationFailure>>> DeleteOrders(params OrderModel[] orders);
+    Task<ResponseModel<OrderModel>> DeleteOrders(params OrderModel[] orders);
   }
 
   /// <summary>
@@ -128,81 +127,63 @@ namespace Terminal.Core.Domains
     /// <summary>
     /// Restore state and initialize
     /// </summary>
-    public abstract Task Connect();
+    public abstract Task<IList<ErrorModel>> Connect();
 
     /// <summary>
     /// Continue execution
     /// </summary>
-    public abstract Task Subscribe();
+    public abstract Task<IList<ErrorModel>> Subscribe();
 
     /// <summary>
     /// Save state and dispose
     /// </summary>
-    public abstract Task Disconnect();
+    public abstract Task<IList<ErrorModel>> Disconnect();
 
     /// <summary>
     /// Unsubscribe from data streams
     /// </summary>
-    public abstract Task Unsubscribe();
-
-    /// <summary>
-    /// Dispose
-    /// </summary>
-    public virtual void Dispose() => Disconnect();
+    public abstract Task<IList<ErrorModel>> Unsubscribe();
 
     /// <summary>
     /// Get quote
     /// </summary>
     /// <param name="message"></param>
-    public virtual Task<PointModel> GetPoint(PointQueryModel message)
-    {
-      return Task.FromResult(null as PointModel);
-    }
+    public abstract Task<ResponseItemModel<PointModel>> GetPoint(PointQueryModel message);
 
     /// <summary>
     /// Get quotes history
     /// </summary>
     /// <param name="message"></param>
-    public virtual Task<IList<PointModel>> GetPoints(PointQueryModel message)
-    {
-      return Task.FromResult(Array.Empty<PointModel>() as IList<PointModel>);
-    }
+    public abstract Task<ResponseItemModel<IList<PointModel>>> GetPoints(PointQueryModel message);
 
     /// <summary>
     /// Get option chains
     /// </summary>
     /// <param name="message"></param>
-    public virtual Task<IList<OptionModel>> GetOptions(OptionQueryModel message)
-    {
-      return Task.FromResult(Array.Empty<OptionModel>() as IList<OptionModel>);
-    }
+    public abstract Task<ResponseItemModel<IList<OptionModel>>> GetOptions(OptionQueryModel message);
 
     /// <summary>
     /// Send new orders
     /// </summary>
     /// <param name="orders"></param>
-    public virtual Task<ResponseModel<OrderModel, IList<ValidationFailure>>> CreateOrders(params OrderModel[] orders)
-    {
-      return Task.FromResult(new ResponseModel<OrderModel, IList<ValidationFailure>>());
-    }
+    public abstract Task<ResponseModel<OrderModel>> CreateOrders(params OrderModel[] orders);
 
     /// <summary>
     /// Update orders
     /// </summary>
     /// <param name="orders"></param>
-    public virtual Task<ResponseModel<OrderModel, IList<ValidationFailure>>> UpdateOrders(params OrderModel[] orders)
-    {
-      return Task.FromResult(new ResponseModel<OrderModel, IList<ValidationFailure>>());
-    }
+    public abstract Task<ResponseModel<OrderModel>> UpdateOrders(params OrderModel[] orders);
 
     /// <summary>
     /// Cancel orders
     /// </summary>
     /// <param name="orders"></param>
-    public virtual Task<ResponseModel<OrderModel, IList<ValidationFailure>>> DeleteOrders(params OrderModel[] orders)
-    {
-      return Task.FromResult(new ResponseModel<OrderModel, IList<ValidationFailure>>());
-    }
+    public abstract Task<ResponseModel<OrderModel>> DeleteOrders(params OrderModel[] orders);
+
+    /// <summary>
+    /// Dispose
+    /// </summary>
+    public virtual void Dispose() => Disconnect();
 
     /// <summary>
     /// Set missing order properties
@@ -228,20 +209,24 @@ namespace Terminal.Core.Domains
     /// Ensure all properties have correct values
     /// </summary>
     /// <param name="orders"></param>
-    protected virtual ResponseModel<OrderModel, IList<ValidationFailure>> ValidateOrders(params OrderModel[] orders)
+    protected virtual ResponseModel<OrderModel> ValidateOrders(params OrderModel[] orders)
     {
       var orderRules = InstanceService<OrderPriceValidator>.Instance;
-      var response = new ResponseModel<OrderModel, IList<ValidationFailure>>();
+      var response = new ResponseModel<OrderModel>();
 
       foreach (var order in orders)
       {
-        var errors = new List<ValidationFailure>();
+        var errors = new List<ErrorModel>();
 
-        errors.AddRange(orderRules.Validate(order).Errors);
-        errors.AddRange(order.Orders.SelectMany(o => orderRules.Validate(o).Errors));
+        errors.AddRange(orderRules.Validate(order).Errors.Select(o => o as ErrorModel));
+        errors.AddRange(order.Orders.SelectMany(o => orderRules.Validate(o).Errors.Select(o => o as ErrorModel)));
 
         response.Count += errors.Count;
-        response.Items.Add((order, errors));
+        response.Items.Add(new ResponseItemModel<OrderModel>
+        {
+          Item = order,
+          Errors = errors
+        });
       }
 
       return response;
