@@ -7,7 +7,7 @@ namespace Terminal.Core.Models
     /// <summary>
     /// Item
     /// </summary>
-    public virtual T Item { get; set; }
+    public virtual T Data { get; set; }
 
     /// <summary>
     /// Items

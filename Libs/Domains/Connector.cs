@@ -57,19 +57,19 @@ namespace Terminal.Core.Domains
     /// Get quote
     /// </summary>
     /// <param name="message"></param>
-    Task<ResponseItemModel<PointModel>> GetPoint(PointQueryModel message);
+    Task<ResponseItemModel<PointModel>> GetPoint(PointMessageModel message);
 
     /// <summary>
     /// Get quotes history
     /// </summary>
     /// <param name="message"></param>
-    Task<ResponseItemModel<IList<PointModel>>> GetPoints(PointQueryModel message);
+    Task<ResponseItemModel<IList<PointModel>>> GetPoints(PointMessageModel message);
 
     /// <summary>
     /// Get option chains
     /// </summary>
     /// <param name="message"></param>
-    Task<ResponseItemModel<IList<OptionModel>>> GetOptions(OptionQueryModel message);
+    Task<ResponseItemModel<IList<OptionModel>>> GetOptions(OptionMessageModel message);
 
     /// <summary>
     /// Send new orders
@@ -150,19 +150,19 @@ namespace Terminal.Core.Domains
     /// Get quote
     /// </summary>
     /// <param name="message"></param>
-    public abstract Task<ResponseItemModel<PointModel>> GetPoint(PointQueryModel message);
+    public abstract Task<ResponseItemModel<PointModel>> GetPoint(PointMessageModel message);
 
     /// <summary>
     /// Get quotes history
     /// </summary>
     /// <param name="message"></param>
-    public abstract Task<ResponseItemModel<IList<PointModel>>> GetPoints(PointQueryModel message);
+    public abstract Task<ResponseItemModel<IList<PointModel>>> GetPoints(PointMessageModel message);
 
     /// <summary>
     /// Get option chains
     /// </summary>
     /// <param name="message"></param>
-    public abstract Task<ResponseItemModel<IList<OptionModel>>> GetOptions(OptionQueryModel message);
+    public abstract Task<ResponseItemModel<IList<OptionModel>>> GetOptions(OptionMessageModel message);
 
     /// <summary>
     /// Send new orders
@@ -227,7 +227,7 @@ namespace Terminal.Core.Domains
         response.Count += errors.Count;
         response.Items.Add(new ResponseItemModel<OrderModel>
         {
-          Item = order,
+          Data = order,
           Errors = errors
         });
       }

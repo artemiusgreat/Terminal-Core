@@ -1,9 +1,8 @@
 using System;
-using Terminal.Core.Enums;
 
 namespace Terminal.Core.Models
 {
-  public class PointQueryModel
+  public class OptionMessageModel
   {
     /// <summary>
     /// Symbol
@@ -19,10 +18,5 @@ namespace Terminal.Core.Models
     /// Start date
     /// </summary>
     public virtual DateTime? MaxDate { get; set; }
-
-    /// <summary>
-    /// Resolution
-    /// </summary>
-    public virtual ResolutionEnum? Resolution { get; set; }
   }
 }
